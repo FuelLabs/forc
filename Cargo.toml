@@ -1,0 +1,40 @@
+[package]
+name = "forc-wallet"
+version = "0.15.2"
+edition = "2024"
+homepage = "https://fuel.network/"
+license = "Apache-2.0"
+repository = "https://github.com/FuelLabs/forc-wallet"
+description = "A forc plugin for generating or importing wallets using mnemonic phrases."
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.2.4", features = ["derive"] }
+eth-keystore = { version = "0.5" }
+forc-tracing = "0.68"
+
+# Dependencies from the `fuels-rs` repository:
+fuels = "0.75"
+
+futures = "0.3"
+hex = "0.4"
+home = "0.5.3"
+rand = { version = "0.8", default-features = false }
+rpassword = "7.2"
+serde_json = "1.0"
+termion = "4.0"
+tokio = { version = "1.44", features = ["full"] }
+url = "2.5"
+
+[lib]
+name = "forc_wallet"
+path = "src/lib.rs"
+
+[[bin]]
+name = "forc-wallet"
+path = "src/main.rs"
+
+[dev-dependencies]
+fuel-core-client = "0.46.0"
+tempfile = "3.19"
+wiremock = "0.6"
