@@ -1,3 +1,9 @@
+# 0.16.1 (November 21st, 2025)
+
+### Changed
+
+- deps: added fuels to the workspace dependencies
+
 # 0.16.0 (November 21st, 2025)
 
 ### Changed
