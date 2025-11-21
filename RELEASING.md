@@ -6,11 +6,13 @@ This repository is organized as a monorepo containing multiple workspace members
 
 ### Tag Naming Convention
 
-Tags follow the format: `{crate-name}-{version}`
+Tags follow the format: `{crate-name}-{version}` (no `v` prefix)
 
 Examples:
 - `forc-wallet-0.16.0` - Releases the `forc-wallet` crate at version 0.16.0
 - `forc-plugin-0.1.0` - Would release a hypothetical `forc-plugin` crate at version 0.1.0
+
+**Note:** Unlike some repositories that use `v1.0.0`, we follow the Tokio convention of no `v` prefix in tags.
 
 ### Before Creating a Release
 
@@ -30,15 +32,30 @@ Examples:
 5. Add **release notes** (can be based on the CHANGELOG)
 6. Click **"Publish release"**
 
-### What Happens Next
+### What Happens Automatically
 
-The CI workflow (`.github/workflows/ci.yml`) will automatically:
+When you publish a GitHub release with a tag like `forc-wallet-0.16.0`, the CI workflow (`.github/workflows/ci.yml`) automatically triggers two parallel jobs:
 
-1. **Parse the tag** to extract crate name and version
-2. **Verify** the version in `{crate-name}/Cargo.toml` matches the tag
-3. **Build release binaries** for multiple platforms (Linux x64/ARM64, macOS x64/ARM64)
-4. **Publish to crates.io** with the configured registry token
-5. **Upload binaries** to the GitHub release
+#### 1. Publish to crates.io (`publish-crates` job)
+
+- Runs linting and verification checks
+- Extracts the crate name from the tag (e.g., `forc-wallet` from `forc-wallet-0.16.0`)
+- Verifies the version in `{crate-name}/Cargo.toml` matches the tag version
+- Publishes **only that specific crate** to crates.io using the configured registry token
+- Only the crate specified in the tag is published; other workspace members are unaffected
+
+#### 2. Build Release Binaries (`build-release` job)
+
+- Extracts the crate name from the tag
+- Builds the binary for **only that crate** across multiple platforms:
+  - **Linux**: x86_64 and aarch64 (ARM64)
+  - **macOS**: x86_64 (Intel) and aarch64 (Apple Silicon)
+- Strips debug symbols to reduce binary size
+- Creates compressed archives with the naming format: `{tag}-{platform}.tar.gz`
+  - Example: `forc-wallet-0.16.0-x86_64-unknown-linux-gnu.tar.gz`
+- Uploads all binary archives to the GitHub release
+
+**Key Point:** The CI is fully generic. When you add a new workspace member (e.g., `forc-plugin`) and create a tag `forc-plugin-1.0.0`, the same CI workflow will automatically build and publish that crate without any workflow modifications.
 
 ### Release Checklist
 

@@ -17,9 +17,6 @@ if [ -z "$TAG" ]; then
     exit 1
 fi
 
-# strip preceding 'v' if it exists on tag
-TAG=${TAG/#v}
-
 # Extract crate name and version from tag (format: {crate-name}-{version})
 # Example: forc-wallet-0.16.0 -> crate=forc-wallet, version=0.16.0
 CRATE_NAME=$(echo "$TAG" | sed -E 's/-[0-9]+\.[0-9]+\.[0-9]+.*//')

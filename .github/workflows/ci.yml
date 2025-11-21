@@ -173,7 +173,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TOOLING }}
 
   build-release:
-    name: build forc wallet release binaries
+    name: build release binaries
     runs-on: ${{ matrix.job.os }}
     if: github.event_name == 'release' && github.event.action == 'published'
     needs: cancel-previous-runs
@@ -196,6 +196,15 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+      - name: Extract crate name from tag
+        id: extract_crate
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          # Extract crate name (everything before the last version number)
+          CRATE_NAME=$(echo "$TAG" | sed -E 's/-[0-9]+\.[0-9]+\.[0-9]+.*//')
+          echo "crate_name=$CRATE_NAME" >> $GITHUB_OUTPUT
+          echo "Building crate: $CRATE_NAME"
+
       - name: Install toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -215,12 +224,12 @@ jobs:
           crate: cross
           cache-key: "${{ matrix.job.target }}"
 
-      - name: Build forc-wallet
+      - name: Build ${{ steps.extract_crate.outputs.crate_name }}
         run: |
-          cross build --profile=release --target ${{ matrix.job.target }} -p forc-wallet
+          cross build --profile=release --target ${{ matrix.job.target }} -p ${{ steps.extract_crate.outputs.crate_name }}
       - name: Strip release binary x86_64-linux-gnu
         if: matrix.job.target == 'x86_64-unknown-linux-gnu'
-        run: strip "target/${{ matrix.job.target }}/release/forc-wallet"
+        run: strip "target/${{ matrix.job.target }}/release/${{ steps.extract_crate.outputs.crate_name }}"
 
       - name: Strip release binary aarch64-linux-gnu
         if: matrix.job.target == 'aarch64-unknown-linux-gnu'
@@ -229,30 +238,29 @@ jobs:
           "$PWD/target:/target:Z" \
           ghcr.io/cross-rs/aarch64-unknown-linux-gnu:main \
           aarch64-linux-gnu-strip \
-          /target/aarch64-unknown-linux-gnu/release/forc-wallet
+          /target/aarch64-unknown-linux-gnu/release/${{ steps.extract_crate.outputs.crate_name }}
       - name: Strip release binary mac
         if: matrix.job.os == 'macos-latest'
-        run: strip -x "target/${{ matrix.job.target }}/release/forc-wallet"
+        run: strip -x "target/${{ matrix.job.target }}/release/${{ steps.extract_crate.outputs.crate_name }}"
 
       - name: Prep assets
         id: prep_assets
         env:
           PLATFORM_NAME: ${{ matrix.job.platform }}
           TARGET: ${{ matrix.job.target }}
+          CRATE_NAME: ${{ steps.extract_crate.outputs.crate_name }}
         run: |
           # Get tag name
           # See: https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/m-p/32167/highlight/true#M1027
-          FORC_WALLET_VERSION="${GITHUB_REF#refs/tags/}"
-          # trim v from tag prefix
-          FORC_WALLET_VERSION="${FORC_WALLET_VERSION#v}" 
-          echo "version is: $FORC_WALLET_VERSION"
+          TAG="${GITHUB_REF#refs/tags/}"
+          echo "version is: $TAG"
           # setup artifact filename
-          ARTIFACT="forc-wallet-$FORC_WALLET_VERSION-${{ env.TARGET }}"
+          ARTIFACT="${TAG}-${{ env.TARGET }}"
           ZIP_FILE_NAME="$ARTIFACT.tar.gz"
           echo "ZIP_FILE_NAME=$ZIP_FILE_NAME" >> $GITHUB_ENV
           # create zip file
           mkdir -pv "$ARTIFACT"
-          cp "target/${{ matrix.job.target }}/release/forc-wallet" "$ARTIFACT"
+          cp "target/${{ matrix.job.target }}/release/${CRATE_NAME}" "$ARTIFACT"
           tar -czvf $ZIP_FILE_NAME "$ARTIFACT"
       - name: Upload release archive
         uses: softprops/action-gh-release@v2
