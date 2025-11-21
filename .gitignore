@@ -1,0 +1,14 @@
+
+# IDE
+.vscode
+
+# Output
+/target
+
+# .DS_Store
+.DS_Store
+
+# Forc's build directory
+out
+
+.claude

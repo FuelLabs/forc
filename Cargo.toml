@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = [
+    "forc-wallet"
+]
+
+[workspace.package]
+authors = ["Fuel Labs <contact@fuel.sh>"]
+homepage = "https://fuel.network/"
+license = "Apache-2.0"
+repository = "https://github.com/FuelLabs/forc"
