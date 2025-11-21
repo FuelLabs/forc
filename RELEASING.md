@@ -9,6 +9,7 @@ This repository is organized as a monorepo containing multiple workspace members
 Tags follow the format: `{crate-name}-{version}` (no `v` prefix)
 
 Examples:
+
 - `forc-wallet-0.16.0` - Releases the `forc-wallet` crate at version 0.16.0
 - `forc-plugin-0.1.0` - Would release a hypothetical `forc-plugin` crate at version 0.1.0
 
@@ -70,6 +71,7 @@ When you publish a GitHub release with a tag like `forc-wallet-0.16.0`, the CI w
 ## Workspace Members
 
 Current workspace members:
+
 - `forc-wallet` - A forc plugin for generating or importing wallets using mnemonic phrases
 
 As new crates are added to the workspace, they can be released independently using the same process.
