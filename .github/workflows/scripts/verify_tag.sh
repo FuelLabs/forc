@@ -10,26 +10,47 @@ status() {
     printf "\e[32m\e[1m%${WIDTH}s\e[0m %s\n" "$1" "$2"
 }
 
-REF=$1
-MANIFEST=$2
+TAG=$1
 
-if [ -z "$REF" ]; then
-    err "Expected ref to be set"
+if [ -z "$TAG" ]; then
+    err "Expected tag to be set"
     exit 1
 fi
 
-if [ -z "$MANIFEST" ]; then
-    err "Expected manifest to be set"
+# strip preceding 'v' if it exists on tag
+TAG=${TAG/#v}
+
+# Extract crate name and version from tag (format: {crate-name}-{version})
+# Example: forc-wallet-0.16.0 -> crate=forc-wallet, version=0.16.0
+CRATE_NAME=$(echo "$TAG" | sed -E 's/-[0-9]+\.[0-9]+\.[0-9]+.*//')
+VERSION=$(echo "$TAG" | sed -E 's/^.*-([0-9]+\.[0-9]+\.[0-9]+.*)/\1/')
+
+if [ -z "$CRATE_NAME" ] || [ -z "$VERSION" ]; then
+    err "Failed to parse crate name and version from tag: $TAG"
+    err "Expected format: {crate-name}-{version} (e.g., forc-wallet-0.16.0)"
     exit 1
 fi
 
-# strip preceeding 'v' if it exists on tag
-REF=${REF/#v}
-TOML_VERSION=$(cat $MANIFEST | dasel -r toml 'package.version')
+status "Parsed tag" "$TAG -> crate: $CRATE_NAME, version: $VERSION"
 
-if [ "$TOML_VERSION" != "$REF" ]; then
-    err "Crate version $TOML_VERSION, doesn't match tag version $REF"
+# Find the Cargo.toml for this crate
+MANIFEST="${CRATE_NAME}/Cargo.toml"
+
+if [ ! -f "$MANIFEST" ]; then
+    err "Manifest not found at $MANIFEST"
+    err "Available workspace members:"
+    ls -d */ | grep -v target | sed 's|/||'
+    exit 1
+fi
+
+status "Found manifest" "$MANIFEST"
+
+# Verify the version in Cargo.toml matches the tag
+TOML_VERSION=$(cat "$MANIFEST" | dasel -r toml 'package.version')
+
+if [ "$TOML_VERSION" != "$VERSION" ]; then
+    err "Crate version $TOML_VERSION in $MANIFEST doesn't match tag version $VERSION"
     exit 1
 else
-  status "Crate version matches tag $TOML_VERSION"
+  status "Verified" "Crate version matches tag: $VERSION"
 fi
