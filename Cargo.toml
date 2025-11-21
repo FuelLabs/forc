@@ -9,3 +9,6 @@ authors = ["Fuel Labs <contact@fuel.sh>"]
 homepage = "https://fuel.network/"
 license = "Apache-2.0"
 repository = "https://github.com/FuelLabs/forc"
+
+[workspace.dependencies]
+fuels = "0.75"
