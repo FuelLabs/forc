@@ -1,11 +1,10 @@
 [workspace]
-resolver = "3"
+resolver = "2"
 members = [
     "forc-wallet"
 ]
 
 [workspace.package]
-edition = "2024"
 authors = ["Fuel Labs <contact@fuel.sh>"]
 homepage = "https://fuel.network/"
 license = "Apache-2.0"
