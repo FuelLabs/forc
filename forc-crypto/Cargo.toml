@@ -1,0 +1,45 @@
+[package]
+name = "forc-crypto"
+version = "0.70.2"
+description = "A `forc` plugin for handling various cryptographic operations and conversions."
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+clap = { workspace = true, features = ["derive", "env"] }
+forc-tracing.workspace = true
+forc-util.workspace = true
+fuel-core-types.workspace = true
+fuel-crypto = { version = "0.65", features = ["random"] }
+futures.workspace = true
+hex.workspace = true
+libp2p-identity = { workspace = true, features = ["peerid", "secp256k1"] }
+rand.workspace = true
+rayon.workspace = true
+regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+sha3.workspace = true
+termion.workspace = true
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "process"] }
+tracing.workspace = true
+
+fuels-accounts = "0.76"
+fuels-core = "0.76"
+
+[dev-dependencies]
+criterion.workspace = true
+tempfile.workspace = true
+
+[[bench]]
+name = "bench_main"
+harness = false
+
+[lints]
+workspace = true
