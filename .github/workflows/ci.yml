@@ -267,3 +267,44 @@ jobs:
         if: github.ref_type == 'tag'
         with:
           files: ${{ env.ZIP_FILE_NAME }}
+
+  update-releases:
+    name: Update releases.toml
+    needs: publish-crates
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Extract crate info from tag
+        id: extract
+        run: |
+          TAG="${{ github.ref_name }}"
+          CRATE_NAME=$(echo "$TAG" | sed -E 's/-[0-9]+\.[0-9]+\.[0-9]+.*//')
+          VERSION=$(echo "$TAG" | sed -E 's/^.*-([0-9]+\.[0-9]+\.[0-9]+.*)/\1/')
+          echo "crate_name=$CRATE_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update releases.toml
+        run: ./.github/workflows/scripts/update_releases.sh ${{ steps.extract.outputs.crate_name }} ${{ steps.extract.outputs.version }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: chore/releases-${{ github.ref_name }}
+          commit-message: "chore: update releases.toml for ${{ github.ref_name }}"
+          title: "chore: update releases.toml for ${{ github.ref_name }}"
+          body: |
+            Auto-generated PR to update `releases.toml` after publishing `${{ github.ref_name }}`.
+
+            This tracks the dependency versions used in this release for compatibility reference.
+          labels: automated,releases
