@@ -1,3 +1,7 @@
+# 0.16.2 (December 6th, 2025)
+
+No functional changes. Version bump to test `releases.toml` automation.
+
 # 0.16.1 (November 21st, 2025)
 
 ### Changed

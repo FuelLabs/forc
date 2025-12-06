@@ -56,6 +56,15 @@ When you publish a GitHub release with a tag like `forc-wallet-0.16.0`, the CI w
   - Example: `forc-wallet-0.16.0-x86_64-unknown-linux-gnu.tar.gz`
 - Uploads all binary archives to the GitHub release
 
+#### 3. Update Compatibility Tracking (`update-releases` job)
+
+- Runs after successful crate publication
+- Extracts dependency versions from `Cargo.lock` (sway, fuel-core, fuels-rs)
+- Appends an entry to `releases.toml` tracking what versions this release was built against
+- Opens a PR to merge the updated `releases.toml` into main
+
+This creates an append-only log of releases and their dependencies, useful for `fuelup` and `fuel.nix` to determine compatible toolchain combinations.
+
 **Key Point:** The CI is fully generic. When you add a new workspace member (e.g., `forc-plugin`) and create a tag `forc-plugin-1.0.0`, the same CI workflow will automatically build and publish that crate without any workflow modifications.
 
 ### Release Checklist

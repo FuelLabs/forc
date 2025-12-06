@@ -4,7 +4,7 @@ name = "forc-wallet"
 # - Remove path dependencies
 # - Update CHANGELOG.md.
 # - Create "forc-wallet-0.16.x" git tag.
-version = "0.16.1"
+version = "0.16.2"
 description = "A forc plugin for generating or importing wallets using mnemonic phrases."
 edition = "2024"
 authors.workspace = true
