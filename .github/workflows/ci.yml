@@ -292,6 +292,11 @@ jobs:
           echo "crate_name=$CRATE_NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Fetch latest releases.toml from main
+        run: |
+          git fetch origin main
+          git checkout origin/main -- releases.toml 2>/dev/null || true
+
       - name: Update releases.toml
         run: ./.github/workflows/scripts/update_releases.sh ${{ steps.extract.outputs.crate_name }} ${{ steps.extract.outputs.version }}
 
