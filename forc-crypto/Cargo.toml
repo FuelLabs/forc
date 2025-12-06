@@ -1,9 +1,13 @@
 [package]
 name = "forc-crypto"
-version = "0.70.2"
+# When releasing to crates.io:
+# - Remove path dependencies
+# - Update CHANGELOG.md.
+# - Create "forc-crypto-0.71.x" git tag.
+version = "0.71.0"
 description = "A `forc` plugin for handling various cryptographic operations and conversions."
+edition = "2021"
 authors.workspace = true
-edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
@@ -12,7 +16,7 @@ repository.workspace = true
 anyhow.workspace = true
 async-trait.workspace = true
 clap = { workspace = true, features = ["derive", "env"] }
-forc-tracing.workspace = true
+forc-tracing = "0.70.2"
 forc-util.workspace = true
 fuel-core-types.workspace = true
 fuel-crypto = { version = "0.65", features = ["random"] }
