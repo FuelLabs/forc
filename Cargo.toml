@@ -1,7 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
-    "forc-wallet"
+    "forc-crypto",
+    "forc-tracing",
+    "forc-wallet",
 ]
 
 [workspace.package]
@@ -10,5 +12,42 @@ homepage = "https://fuel.network/"
 license = "Apache-2.0"
 repository = "https://github.com/FuelLabs/forc"
 
+
 [workspace.dependencies]
-fuels = "0.75"
+# External Fuel dependencies
+fuel-core-types = { version = "0.47", default-features = false }
+forc-util = "0.70.2"
+
+# External dependencies
+ansiterm = "0.12"
+anyhow = "1.0"
+async-trait = "0.1"
+clap = "4.5"
+criterion = "0.5"
+eth-keystore = "0.5"
+futures = { version = "0.3", default-features = false }
+hex = "0.4"
+home = "0.5"
+libp2p-identity = "0.2"
+rand = "0.8"
+rayon = "1.7"
+regex = "1.10"
+rpassword = "7.2"
+serde = "1.0"
+serde_json = "1.0"
+serde_yaml = "0.9"
+sha3 = "0.10"
+tempfile = "3"
+termion = "4.0"
+tokio = "1.48"
+tracing = "0.1"
+tracing-subscriber = "0.3.22"
+tracing-test = "0.2"
+serial_test = "3"
+url = "2.5"
+
+[workspace.lints.rust]
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+all = "warn"

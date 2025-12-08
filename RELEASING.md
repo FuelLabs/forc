@@ -48,13 +48,16 @@ When you publish a GitHub release with a tag like `forc-wallet-0.16.0`, the CI w
 #### 2. Build Release Binaries (`build-release` job)
 
 - Extracts the crate name from the tag
-- Builds the binary for **only that crate** across multiple platforms:
+- **Checks if the crate has a binary target** (skips library-only crates)
+- For binary crates, builds across multiple platforms:
   - **Linux**: x86_64 and aarch64 (ARM64)
   - **macOS**: x86_64 (Intel) and aarch64 (Apple Silicon)
 - Strips debug symbols to reduce binary size
 - Creates compressed archives with the naming format: `{tag}-{platform}.tar.gz`
   - Example: `forc-wallet-0.16.0-x86_64-unknown-linux-gnu.tar.gz`
 - Uploads all binary archives to the GitHub release
+
+**Note:** Library-only crates (like `forc-tracing`) are published to crates.io but do not produce release binaries.
 
 #### 3. Update Compatibility Tracking (`update-releases` job)
 
@@ -81,6 +84,10 @@ This creates an append-only log of releases and their dependencies, useful for `
 
 Current workspace members:
 
-- `forc-wallet` - A forc plugin for generating or importing wallets using mnemonic phrases
+| Crate | Type | Description |
+|-------|------|-------------|
+| `forc-wallet` | binary | A forc plugin for generating or importing wallets using mnemonic phrases |
+| `forc-crypto` | binary | A forc plugin for cryptographic operations (hashing, key generation, vanity addresses) |
+| `forc-tracing` | library | Tracing utility shared between forc crates |
 
 As new crates are added to the workspace, they can be released independently using the same process.
