@@ -31,11 +31,13 @@ DATE=$(date -u +"%Y-%m-%d")
 CRATE_TOML="${CRATE_NAME}/Cargo.toml"
 
 # Extract resolved version from Cargo.lock
+# Uses cargo metadata for accuracy when multiple versions exist
 get_lock_version() {
     local dep_name=$1
-    grep -A1 "name = \"$dep_name\"" Cargo.lock 2>/dev/null | \
-        grep "version = " | head -1 | \
-        sed 's/.*version = "\(.*\)".*/\1/'
+    cargo metadata --format-version 1 2>/dev/null | \
+        jq -r --arg name "$dep_name" \
+        '.packages[] | select(.name == $name) | .version' | \
+        sort -V | tail -1
 }
 
 # Check if crate depends on a package
@@ -48,6 +50,7 @@ crate_depends_on() {
 # Only record versions for dependencies the crate actually uses
 SWAY_VERSION=""
 FUEL_CORE_VERSION=""
+FUEL_CORE_TYPES_VERSION=""
 FUELS_VERSION=""
 
 if crate_depends_on "sway-core"; then
@@ -58,8 +61,23 @@ if crate_depends_on "fuel-core"; then
     FUEL_CORE_VERSION=$(get_lock_version "fuel-core")
 fi
 
+if crate_depends_on "fuel-core-types"; then
+    FUEL_CORE_TYPES_VERSION=$(get_lock_version "fuel-core-types")
+fi
+
+# Check for fuels umbrella crate or specific fuels-* crates
 if crate_depends_on "fuels"; then
     FUELS_VERSION=$(get_lock_version "fuels")
+elif crate_depends_on "fuels-core"; then
+    FUELS_VERSION=$(get_lock_version "fuels-core")
+elif crate_depends_on "fuels-accounts"; then
+    FUELS_VERSION=$(get_lock_version "fuels-accounts")
+fi
+
+# Skip if no relevant dependencies found
+if [ -z "$SWAY_VERSION" ] && [ -z "$FUEL_CORE_VERSION" ] && [ -z "$FUEL_CORE_TYPES_VERSION" ] && [ -z "$FUELS_VERSION" ]; then
+    status "Skipping" "$CRATE_NAME has no tracked dependencies (sway-core, fuel-core, fuel-core-types, fuels-rs)"
+    exit 0
 fi
 
 # Create releases.toml if it doesn't exist
@@ -81,6 +99,7 @@ fi
 
     [ -n "$SWAY_VERSION" ] && echo "sway = \"$SWAY_VERSION\""
     [ -n "$FUEL_CORE_VERSION" ] && echo "fuel-core = \"$FUEL_CORE_VERSION\""
+    [ -n "$FUEL_CORE_TYPES_VERSION" ] && echo "fuel-core-types = \"$FUEL_CORE_TYPES_VERSION\""
     [ -n "$FUELS_VERSION" ] && echo "fuels-rs = \"$FUELS_VERSION\""
     echo ""
 } >> "$RELEASES_FILE"
