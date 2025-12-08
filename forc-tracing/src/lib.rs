@@ -308,6 +308,7 @@ pub fn init_tracing_subscriber(options: TracingSubscriberOptions) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serial_test::serial;
     use tracing_test::traced_test;
 
     // Helper function to set up each test with consistent JSON mode state
@@ -317,98 +318,72 @@ mod tests {
 
     #[traced_test]
     #[test]
+    #[serial]
     fn test_println_label_green() {
         setup_test();
 
         let txt = "main.sw";
         println_label_green("Compiling", txt);
 
-        // tracing-test escapes ANSI codes in captured logs, so we check for the escaped representation
-        // Bold green: \x1b[1;32m -> displayed as literal string "\\x1b[1;32m"
-        // Reset: \x1b[0m -> displayed as literal string "\\x1b[0m"
-        assert!(
-            logs_contain(r"\x1b[1;32m"),
-            "Should contain green ANSI start code"
-        );
-        assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
-        assert!(logs_contain("Compiling"));
-        assert!(logs_contain(txt));
+        // tracing-test escapes ANSI codes to literal text
+        assert!(logs_contain(r"\x1b[1;32mCompiling\x1b[0m main.sw"));
     }
 
     #[traced_test]
     #[test]
+    #[serial]
     fn test_println_label_red() {
         setup_test();
 
         let txt = "main.sw";
         println_label_red("Error", txt);
 
-        // tracing-test escapes ANSI codes - bold red: \x1b[1;31m
-        assert!(
-            logs_contain(r"\x1b[1;31m"),
-            "Should contain red ANSI start code"
-        );
-        assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
-        assert!(logs_contain("Error"));
-        assert!(logs_contain(txt));
+        // tracing-test escapes ANSI codes to literal text
+        assert!(logs_contain(r"\x1b[1;31mError\x1b[0m main.sw"));
     }
 
     #[traced_test]
     #[test]
+    #[serial]
     fn test_println_action_green() {
         setup_test();
 
         let txt = "main.sw";
         println_action_green("Compiling", txt);
 
-        // tracing-test escapes ANSI codes - bold green: \x1b[1;32m
-        assert!(
-            logs_contain(r"\x1b[1;32m"),
-            "Should contain green ANSI start code"
-        );
-        assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
-        assert!(logs_contain("Compiling"));
-        assert!(logs_contain(txt));
+        // tracing-test escapes ANSI codes to literal text
+        assert!(logs_contain(r"   \x1b[1;32mCompiling\x1b[0m main.sw"));
     }
 
     #[traced_test]
     #[test]
+    #[serial]
     fn test_println_action_green_long() {
         setup_test();
 
         let txt = "main.sw";
         println_action_green("Supercalifragilistic", txt);
 
-        // tracing-test escapes ANSI codes - bold green: \x1b[1;32m
-        assert!(
-            logs_contain(r"\x1b[1;32m"),
-            "Should contain green ANSI start code"
-        );
-        assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
-        assert!(logs_contain("Supercalifragilistic"));
-        assert!(logs_contain(txt));
+        // tracing-test escapes ANSI codes to literal text
+        assert!(logs_contain(r"\x1b[1;32mSupercalifragilistic\x1b[0m main.sw"));
     }
 
     #[traced_test]
     #[test]
+    #[serial]
     fn test_println_action_red() {
         setup_test();
 
         let txt = "main";
         println_action_red("Removing", txt);
 
-        // tracing-test escapes ANSI codes - bold red: \x1b[1;31m
-        assert!(
-            logs_contain(r"\x1b[1;31m"),
-            "Should contain red ANSI start code"
-        );
-        assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
-        assert!(logs_contain("Removing"));
-        assert!(logs_contain(txt));
+        // tracing-test escapes ANSI codes to literal text
+        assert!(logs_contain(r"    \x1b[1;31mRemoving\x1b[0m main"));
     }
 
     #[traced_test]
     #[test]
+    #[serial]
     fn test_json_mode_println_functions() {
         setup_test();
 
