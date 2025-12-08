@@ -365,7 +365,9 @@ mod tests {
         println_action_green("Supercalifragilistic", txt);
 
         // tracing-test escapes ANSI codes to literal text
-        assert!(logs_contain(r"\x1b[1;32mSupercalifragilistic\x1b[0m main.sw"));
+        assert!(logs_contain(
+            r"\x1b[1;32mSupercalifragilistic\x1b[0m main.sw"
+        ));
     }
 
     #[traced_test]
