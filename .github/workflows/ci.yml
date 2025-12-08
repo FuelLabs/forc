@@ -147,6 +147,13 @@ jobs:
           toolchain: stable
           override: true
 
+      - name: Extract crate name from tag
+        id: extract_crate
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          CRATE_NAME=$(echo "$TAG" | sed -E 's/-[0-9]+\.[0-9]+\.[0-9]+.*//')
+          echo "crate_name=$CRATE_NAME" >> $GITHUB_OUTPUT
+
       - name: Verify tag version
         run: |
           curl -sSLf "https://github.com/TomWright/dasel/releases/download/v1.24.3/dasel_linux_amd64" -L -o dasel && chmod +x dasel
@@ -156,6 +163,7 @@ jobs:
       - name: Publish crate
         uses: FuelLabs/publish-crates@v1
         with:
+          path: ./${{ steps.extract_crate.outputs.crate_name }}
           publish-delay: 30000
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
