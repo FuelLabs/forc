@@ -205,7 +205,21 @@ jobs:
           echo "crate_name=$CRATE_NAME" >> $GITHUB_OUTPUT
           echo "Building crate: $CRATE_NAME"
 
+      - name: Check if crate has binary target
+        id: check_binary
+        run: |
+          CRATE_NAME="${{ steps.extract_crate.outputs.crate_name }}"
+          # Check if the crate's Cargo.toml has a [[bin]] section or src/main.rs
+          if [ -f "${CRATE_NAME}/src/main.rs" ] || grep -q '^\[\[bin\]\]' "${CRATE_NAME}/Cargo.toml" 2>/dev/null; then
+            echo "has_binary=true" >> $GITHUB_OUTPUT
+            echo "Crate $CRATE_NAME has binary target"
+          else
+            echo "has_binary=false" >> $GITHUB_OUTPUT
+            echo "Crate $CRATE_NAME is library-only, skipping binary build"
+          fi
+
       - name: Install toolchain
+        if: steps.check_binary.outputs.has_binary == 'true'
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -214,36 +228,42 @@ jobs:
           override: true
 
       - uses: Swatinem/rust-cache@v1
+        if: steps.check_binary.outputs.has_binary == 'true'
         with:
           cache-on-failure: true
           key: "${{ matrix.job.target }}"
 
       - name: Use Cross
+        if: steps.check_binary.outputs.has_binary == 'true'
         uses: baptiste0928/cargo-install@v1
         with:
           crate: cross
           cache-key: "${{ matrix.job.target }}"
 
       - name: Build ${{ steps.extract_crate.outputs.crate_name }}
+        if: steps.check_binary.outputs.has_binary == 'true'
         run: |
           cross build --profile=release --target ${{ matrix.job.target }} -p ${{ steps.extract_crate.outputs.crate_name }}
+
       - name: Strip release binary x86_64-linux-gnu
-        if: matrix.job.target == 'x86_64-unknown-linux-gnu'
+        if: steps.check_binary.outputs.has_binary == 'true' && matrix.job.target == 'x86_64-unknown-linux-gnu'
         run: strip "target/${{ matrix.job.target }}/release/${{ steps.extract_crate.outputs.crate_name }}"
 
       - name: Strip release binary aarch64-linux-gnu
-        if: matrix.job.target == 'aarch64-unknown-linux-gnu'
+        if: steps.check_binary.outputs.has_binary == 'true' && matrix.job.target == 'aarch64-unknown-linux-gnu'
         run: |
           docker run --rm -v \
           "$PWD/target:/target:Z" \
           ghcr.io/cross-rs/aarch64-unknown-linux-gnu:main \
           aarch64-linux-gnu-strip \
           /target/aarch64-unknown-linux-gnu/release/${{ steps.extract_crate.outputs.crate_name }}
+
       - name: Strip release binary mac
-        if: matrix.job.os == 'macos-latest'
+        if: steps.check_binary.outputs.has_binary == 'true' && matrix.job.os == 'macos-latest'
         run: strip -x "target/${{ matrix.job.target }}/release/${{ steps.extract_crate.outputs.crate_name }}"
 
       - name: Prep assets
+        if: steps.check_binary.outputs.has_binary == 'true'
         id: prep_assets
         env:
           PLATFORM_NAME: ${{ matrix.job.platform }}
@@ -262,9 +282,10 @@ jobs:
           mkdir -pv "$ARTIFACT"
           cp "target/${{ matrix.job.target }}/release/${CRATE_NAME}" "$ARTIFACT"
           tar -czvf $ZIP_FILE_NAME "$ARTIFACT"
+
       - name: Upload release archive
         uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
+        if: steps.check_binary.outputs.has_binary == 'true' && github.ref_type == 'tag'
         with:
           files: ${{ env.ZIP_FILE_NAME }}
 
