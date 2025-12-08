@@ -326,7 +326,10 @@ mod tests {
         // tracing-test escapes ANSI codes in captured logs, so we check for the escaped representation
         // Bold green: \x1b[1;32m -> displayed as literal string "\\x1b[1;32m"
         // Reset: \x1b[0m -> displayed as literal string "\\x1b[0m"
-        assert!(logs_contain(r"\x1b[1;32m"), "Should contain green ANSI start code");
+        assert!(
+            logs_contain(r"\x1b[1;32m"),
+            "Should contain green ANSI start code"
+        );
         assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
         assert!(logs_contain("Compiling"));
         assert!(logs_contain(txt));
@@ -341,7 +344,10 @@ mod tests {
         println_label_red("Error", txt);
 
         // tracing-test escapes ANSI codes - bold red: \x1b[1;31m
-        assert!(logs_contain(r"\x1b[1;31m"), "Should contain red ANSI start code");
+        assert!(
+            logs_contain(r"\x1b[1;31m"),
+            "Should contain red ANSI start code"
+        );
         assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
         assert!(logs_contain("Error"));
         assert!(logs_contain(txt));
@@ -356,7 +362,10 @@ mod tests {
         println_action_green("Compiling", txt);
 
         // tracing-test escapes ANSI codes - bold green: \x1b[1;32m
-        assert!(logs_contain(r"\x1b[1;32m"), "Should contain green ANSI start code");
+        assert!(
+            logs_contain(r"\x1b[1;32m"),
+            "Should contain green ANSI start code"
+        );
         assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
         assert!(logs_contain("Compiling"));
         assert!(logs_contain(txt));
@@ -371,7 +380,10 @@ mod tests {
         println_action_green("Supercalifragilistic", txt);
 
         // tracing-test escapes ANSI codes - bold green: \x1b[1;32m
-        assert!(logs_contain(r"\x1b[1;32m"), "Should contain green ANSI start code");
+        assert!(
+            logs_contain(r"\x1b[1;32m"),
+            "Should contain green ANSI start code"
+        );
         assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
         assert!(logs_contain("Supercalifragilistic"));
         assert!(logs_contain(txt));
@@ -386,7 +398,10 @@ mod tests {
         println_action_red("Removing", txt);
 
         // tracing-test escapes ANSI codes - bold red: \x1b[1;31m
-        assert!(logs_contain(r"\x1b[1;31m"), "Should contain red ANSI start code");
+        assert!(
+            logs_contain(r"\x1b[1;31m"),
+            "Should contain red ANSI start code"
+        );
         assert!(logs_contain(r"\x1b[0m"), "Should contain ANSI reset code");
         assert!(logs_contain("Removing"));
         assert!(logs_contain(txt));
