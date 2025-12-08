@@ -7,3 +7,10 @@ version = "0.16.2"
 date = "2025-12-07"
 fuels-rs = "0.75.0"
 
+[[releases]]
+crate = "forc-crypto"
+version = "0.71.0"
+date = "2025-12-08"
+fuel-core-types = "0.47.1"
+fuels-rs = "0.76.0"
+
