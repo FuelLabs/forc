@@ -187,15 +187,19 @@ jobs:
           - os: ubuntu-latest
             platform: linux
             target: x86_64-unknown-linux-gnu
+            target_suffix: linux_amd64
           - os: ubuntu-latest
             platform: linux
             target: aarch64-unknown-linux-gnu
+            target_suffix: linux_arm64
           - os: macos-latest
             platform: darwin
             target: x86_64-apple-darwin
+            target_suffix: darwin_amd64
           - os: macos-latest
             platform: darwin
             target: aarch64-apple-darwin
+            target_suffix: darwin_arm64
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -272,14 +276,15 @@ jobs:
         env:
           PLATFORM_NAME: ${{ matrix.job.platform }}
           TARGET: ${{ matrix.job.target }}
+          TARGET_SUFFIX: ${{ matrix.job.target_suffix }}
           CRATE_NAME: ${{ steps.extract_crate.outputs.crate_name }}
         run: |
           # Get tag name
           # See: https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/m-p/32167/highlight/true#M1027
           TAG="${GITHUB_REF#refs/tags/}"
           echo "version is: $TAG"
-          # setup artifact filename
-          ARTIFACT="${TAG}-${{ env.TARGET }}"
+          # setup artifact filename using simplified target names (e.g., linux_amd64, darwin_arm64)
+          ARTIFACT="${TAG}-${{ env.TARGET_SUFFIX }}"
           ZIP_FILE_NAME="$ARTIFACT.tar.gz"
           echo "ZIP_FILE_NAME=$ZIP_FILE_NAME" >> $GITHUB_ENV
           # create zip file
