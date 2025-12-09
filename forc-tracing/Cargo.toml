@@ -4,7 +4,7 @@ name = "forc-tracing"
 # - Remove path dependencies
 # - Update CHANGELOG.md.
 # - Create "forc-tracing-0.71.x" git tag.
-version = "0.71.0"
+version = "0.71.1"
 description = "Tracing utility shared between forc crates."
 edition = "2021"
 authors.workspace = true

@@ -1,3 +1,9 @@
+# 0.71.1 (December 9th, 2025)
+
+### Fixed
+
+- Pin `tracing-subscriber` to 0.3.19 to fix ANSI color output being escaped as literal text
+
 # 0.71.0 (December 8th, 2025)
 
 ### Changed

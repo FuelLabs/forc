@@ -325,8 +325,8 @@ mod tests {
         let txt = "main.sw";
         println_label_green("Compiling", txt);
 
-        // tracing-test escapes ANSI codes to literal text
-        assert!(logs_contain(r"\x1b[1;32mCompiling\x1b[0m main.sw"));
+        let expected_action = "\x1b[1;32mCompiling\x1b[0m";
+        assert!(logs_contain(&format!("{expected_action} {txt}")));
     }
 
     #[traced_test]
@@ -338,8 +338,8 @@ mod tests {
         let txt = "main.sw";
         println_label_red("Error", txt);
 
-        // tracing-test escapes ANSI codes to literal text
-        assert!(logs_contain(r"\x1b[1;31mError\x1b[0m main.sw"));
+        let expected_action = "\x1b[1;31mError\x1b[0m";
+        assert!(logs_contain(&format!("{expected_action} {txt}")));
     }
 
     #[traced_test]
@@ -351,8 +351,8 @@ mod tests {
         let txt = "main.sw";
         println_action_green("Compiling", txt);
 
-        // tracing-test escapes ANSI codes to literal text
-        assert!(logs_contain(r"   \x1b[1;32mCompiling\x1b[0m main.sw"));
+        let expected_action = "\x1b[1;32mCompiling\x1b[0m";
+        assert!(logs_contain(&format!("    {expected_action} {txt}")));
     }
 
     #[traced_test]
@@ -364,10 +364,8 @@ mod tests {
         let txt = "main.sw";
         println_action_green("Supercalifragilistic", txt);
 
-        // tracing-test escapes ANSI codes to literal text
-        assert!(logs_contain(
-            r"\x1b[1;32mSupercalifragilistic\x1b[0m main.sw"
-        ));
+        let expected_action = "\x1b[1;32mSupercalifragilistic\x1b[0m";
+        assert!(logs_contain(&format!("{expected_action} {txt}")));
     }
 
     #[traced_test]
@@ -379,8 +377,8 @@ mod tests {
         let txt = "main";
         println_action_red("Removing", txt);
 
-        // tracing-test escapes ANSI codes to literal text
-        assert!(logs_contain(r"    \x1b[1;31mRemoving\x1b[0m main"));
+        let expected_action = "\x1b[1;31mRemoving\x1b[0m";
+        assert!(logs_contain(&format!("     {expected_action} {txt}")));
     }
 
     #[traced_test]
