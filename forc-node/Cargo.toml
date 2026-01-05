@@ -1,8 +1,8 @@
 [package]
 name = "forc-node"
+version = "0.71.0"
 description = "a wrapper around fuel-core to bootstrap nodes"
-version.workspace = true
-edition.workspace = true
+edition = "2021"
 authors.workspace = true
 homepage.workspace = true
 license.workspace = true
@@ -21,7 +21,7 @@ clap = { workspace = true, features = ["derive", "string"] }
 dialoguer.workspace = true
 forc-tracing.workspace = true
 forc-util.workspace = true
-fuel-core = { workspace = true, default-features = false, features = ["relayer", "rocksdb", "test-helpers"] }
+fuel-core = { workspace = true, features = ["relayer", "rocksdb", "test-helpers"] }
 fuel-core-chain-config.workspace = true
 fuel-core-types.workspace = true
 fuel-crypto = { workspace = true, features = ["random"] }
