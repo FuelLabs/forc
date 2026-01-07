@@ -1,3 +1,7 @@
+# 0.71.1 (January 7th, 2026)
+
+- Fix CI cross-compilation for ARM64 Linux with OpenSSL and RocksDB dependencies
+
 # 0.71.0 (January 7th, 2026)
 
 - Previous release from `FuelLabs/sway` repository
