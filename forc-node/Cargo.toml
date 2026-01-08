@@ -1,6 +1,6 @@
 [package]
 name = "forc-node"
-version = "0.71.0"
+version = "0.71.1"
 description = "a wrapper around fuel-core to bootstrap nodes"
 edition = "2021"
 authors.workspace = true
