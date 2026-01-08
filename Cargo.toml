@@ -42,6 +42,7 @@ portpicker = "0.1"
 rand = "0.8"
 rayon = "1.7"
 regex = "1.10"
+openssl = { version = "0.10", features = ["vendored"] }
 reqwest = "0.12"
 rpassword = "7.2"
 semver = "1.0"
