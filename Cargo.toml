@@ -23,7 +23,7 @@ fuel-core = { version = "0.47", default-features = false }
 fuel-core-chain-config = { version = "0.47", default-features = false }
 fuel-core-types = { version = "0.47", default-features = false }
 fuel-crypto = "0.65"
-fuel-telemetry = { version = "0.1.1", git = "https://github.com/FuelLabs/fuel-telemetry", branch = "main" }
+fuel-telemetry = "0.1.1"
 forc-util = "0.70.2"
 
 # External dependencies
