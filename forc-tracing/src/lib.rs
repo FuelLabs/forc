@@ -23,16 +23,6 @@ use fuel_telemetry::WorkerGuard;
 
 const ACTION_COLUMN_WIDTH: usize = 12;
 
-// ============================================================================
-// CRITICAL FIX: Global storage for telemetry WorkerGuard
-// ============================================================================
-// Using OnceLock ensures the guard lives for the entire process lifetime,
-// matching the global tracing subscriber. This prevents zombie processes that
-// occurred when using thread-local storage with tokio::main on worker threads.
-// See: https://github.com/FuelLabs/sway/issues/7449
-#[cfg(feature = "telemetry")]
-static TELEMETRY_GUARD: std::sync::OnceLock<WorkerGuard> = std::sync::OnceLock::new();
-
 /// Filter to hide telemetry spans from regular application logs
 #[derive(Clone)]
 pub struct HideTelemetryFilter;
@@ -287,12 +277,20 @@ impl<'a> MakeWriter<'a> for TracingWriter {
 /// - The `FORC_DISABLE_TELEMETRY` environment variable
 /// - Setting `disable_telemetry: Some(true)` in options
 ///
-/// # Zombie Process Prevention
+/// # Return Value
 ///
-/// The telemetry WorkerGuard is stored in global static storage using OnceLock,
-/// ensuring it lives for the entire process lifetime. This prevents the zombie
-/// process issue that occurred when using thread-local storage.
-pub fn init_tracing_subscriber(options: TracingSubscriberOptions) {
+/// Returns `Ok(Some(WorkerGuard))` when telemetry is enabled, which must be kept alive
+/// for the duration of the program to ensure telemetry is properly collected.
+/// Returns `Ok(None)` when telemetry is disabled.
+///
+/// # Example
+///
+/// ```ignore
+/// let _guard = init_tracing_subscriber(Default::default())?;
+/// // Your program code here
+/// // The guard is dropped when main() exits, ensuring proper cleanup
+/// ```
+pub fn init_tracing_subscriber(options: TracingSubscriberOptions) -> anyhow::Result<Option<WorkerGuard>> {
     let level_filter = options
         .log_level
         .or_else(|| {
@@ -386,19 +384,15 @@ pub fn init_tracing_subscriber(options: TracingSubscriberOptions) {
     {
         if !disabled {
             if let Ok((telemetry_layer, guard)) = fuel_telemetry::new_with_watchers!() {
-                // CRITICAL: Store the WorkerGuard in global storage
-                // This ensures it lives for the entire process lifetime,
-                // matching the global tracing subscriber's lifetime
-                let _ = TELEMETRY_GUARD.set(guard);
-
                 init_registry!(registry().with(telemetry_layer));
-                return;
+                return Ok(Some(guard));
             }
         }
     }
 
     // Fallback: no telemetry layer
     init_registry!(registry());
+    Ok(None)
 }
 
 fn is_telemetry_disabled_from_options(options: &TracingSubscriberOptions) -> bool {

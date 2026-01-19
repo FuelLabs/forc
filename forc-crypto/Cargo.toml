@@ -12,11 +12,15 @@ homepage.workspace = true
 license.workspace = true
 repository.workspace = true
 
+[features]
+default = ["telemetry"]
+telemetry = ["forc-tracing/telemetry"]
+
 [dependencies]
 anyhow.workspace = true
 async-trait.workspace = true
 clap = { workspace = true, features = ["derive", "env"] }
-forc-tracing = "0.70.2"
+forc-tracing.workspace = true
 forc-util.workspace = true
 fuel-core-types.workspace = true
 fuel-crypto = { version = "0.65", features = ["random"] }

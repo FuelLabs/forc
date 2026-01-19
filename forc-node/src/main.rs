@@ -60,7 +60,7 @@ fn init_logging() {
 
 /// Initialize common setup for testnet and ignition modes
 fn init_cli_setup() -> anyhow::Result<()> {
-    init_tracing_subscriber(Default::default());
+    let _= init_tracing_subscriber(Default::default());
     let current_version = get_fuel_core_version()?;
     let supported_min_version = Version::parse(MIN_FUEL_CORE_VERSION)?;
     if current_version < supported_min_version {
