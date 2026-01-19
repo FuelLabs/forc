@@ -290,7 +290,9 @@ impl<'a> MakeWriter<'a> for TracingWriter {
 /// // Your program code here
 /// // The guard is dropped when main() exits, ensuring proper cleanup
 /// ```
-pub fn init_tracing_subscriber(options: TracingSubscriberOptions) -> anyhow::Result<Option<WorkerGuard>> {
+pub fn init_tracing_subscriber(
+    options: TracingSubscriberOptions,
+) -> anyhow::Result<Option<WorkerGuard>> {
     let level_filter = options
         .log_level
         .or_else(|| {
@@ -340,9 +342,7 @@ pub fn init_tracing_subscriber(options: TracingSubscriberOptions) -> anyhow::Res
                 }
             });
 
-            let composite_filter = env_filter
-                .and(hide_telemetry_filter)
-                .and(regex_filter_fn);
+            let composite_filter = env_filter.and(hide_telemetry_filter).and(regex_filter_fn);
 
             if is_json_mode_active() {
                 $registry
