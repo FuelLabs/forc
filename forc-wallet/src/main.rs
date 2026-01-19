@@ -140,9 +140,10 @@ EXAMPLES:
 
 #[tokio::main]
 async fn main() {
-    init_tracing_subscriber(Default::default());
+    let guard = init_tracing_subscriber(Default::default());
     if let Err(err) = run().await {
         println_error(&format!("{}", err));
+        drop(guard);
         std::process::exit(1);
     }
 }

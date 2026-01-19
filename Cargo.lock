@@ -2536,7 +2536,7 @@ dependencies = [
  "anyhow",
  "clap",
  "eth-keystore",
- "forc-tracing 0.70.2",
+ "forc-tracing 0.72.0",
  "fuel-core-client 0.46.0",
  "fuels",
  "futures",
