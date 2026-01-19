@@ -17,8 +17,8 @@ default = ["telemetry"]
 telemetry = ["dep:fuel-telemetry"]
 
 [dependencies]
-anyhow.workspace = true
 ansiterm.workspace = true
+anyhow.workspace = true
 fuel-telemetry = { workspace = true, optional = true }
 regex.workspace = true
 tracing.workspace = true
