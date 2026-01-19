@@ -3,7 +3,7 @@
 use anyhow::Result;
 use clap::Parser;
 use forc_crypto::{address, keccak256, keys, sha256, Command};
-use forc_tracing::init_tracing_subscriber;
+use forc_tracing::{init_tracing_subscriber, println_error};
 
 use std::{
     default::Default,
@@ -11,13 +11,14 @@ use std::{
 };
 use termion::screen::IntoAlternateScreen;
 
-fn main() -> anyhow::Result<()> {
-    // Initialize tracing and keep the WorkerGuard alive for the program duration
-    let _guard = init_tracing_subscriber(Default::default())?;
+fn main() {
+    let guard = init_tracing_subscriber(Default::default());
 
-    run()?;
-
-    Ok(())
+    if let Err(err) = run() {
+        println_error(&format!("{err}"));
+        drop(guard);
+        std::process::exit(1);
+    }
 }
 
 fn run() -> Result<()> {
