@@ -1,9 +1,9 @@
 [package]
 name = "forc-client"
-version.workspace = true
+version = "0.70.3"
+edition = "2021"
 description = "A `forc` plugin for interacting with a Fuel node."
 authors.workspace = true
-edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
@@ -64,10 +64,8 @@ reqwest = { workspace = true }
 rpassword.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-sway-ast.workspace = true
 sway-core.workspace = true
 sway-features.workspace = true
-sway-parse.workspace = true
 sway-types.workspace = true
 sway-utils.workspace = true
 tempfile.workspace = true
