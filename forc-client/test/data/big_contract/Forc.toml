@@ -5,4 +5,4 @@ license = "Apache-2.0"
 name = "big_contract"
 
 [dependencies]
-std = { path = "../../../../../sway-lib-std/" }
+
