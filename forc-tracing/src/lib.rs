@@ -314,6 +314,7 @@ pub fn init_tracing_subscriber(
             TracingWriter::Json
         }
         Some(TracingWriter::Stderr) => TracingWriter::Stderr,
+        Some(TracingWriter::Stdout) => TracingWriter::Stdout,
         _ => TracingWriter::Stdio,
     };
 
