@@ -306,8 +306,7 @@ pub fn init_tracing_subscriber(
             options
                 .silent
                 .and_then(|silent| silent.then_some(LevelFilter::OFF))
-        })
-        .unwrap_or(LevelFilter::INFO);
+        });
 
     let writer_mode = match options.writer_mode {
         Some(TracingWriter::Json) => {
@@ -344,37 +343,38 @@ pub fn init_tracing_subscriber(
 
             let composite_filter = env_filter.and(hide_telemetry_filter).and(regex_filter_fn);
 
+            // Only apply level_filter if user explicitly set it via CLI flags
             if is_json_mode_active() {
-                $registry
-                    .with(
-                        tracing_subscriber::fmt::layer()
-                            .json()
-                            .with_ansi(true)
-                            .with_level(false)
-                            .with_file(false)
-                            .with_line_number(false)
-                            .without_time()
-                            .with_target(false)
-                            .with_writer(writer_mode)
-                            .with_filter(composite_filter)
-                            .with_filter(level_filter),
-                    )
-                    .init();
+                let layer = tracing_subscriber::fmt::layer()
+                    .json()
+                    .with_ansi(true)
+                    .with_level(false)
+                    .with_file(false)
+                    .with_line_number(false)
+                    .without_time()
+                    .with_target(false)
+                    .with_writer(writer_mode)
+                    .with_filter(composite_filter);
+
+                match level_filter {
+                    Some(filter) => $registry.with(layer.with_filter(filter)).init(),
+                    None => $registry.with(layer).init(),
+                }
             } else {
-                $registry
-                    .with(
-                        tracing_subscriber::fmt::layer()
-                            .with_ansi(true)
-                            .with_level(false)
-                            .with_file(false)
-                            .with_line_number(false)
-                            .without_time()
-                            .with_target(false)
-                            .with_writer(writer_mode)
-                            .with_filter(composite_filter)
-                            .with_filter(level_filter),
-                    )
-                    .init();
+                let layer = tracing_subscriber::fmt::layer()
+                    .with_ansi(true)
+                    .with_level(false)
+                    .with_file(false)
+                    .with_line_number(false)
+                    .without_time()
+                    .with_target(false)
+                    .with_writer(writer_mode)
+                    .with_filter(composite_filter);
+
+                match level_filter {
+                    Some(filter) => $registry.with(layer.with_filter(filter)).init(),
+                    None => $registry.with(layer).init(),
+                }
             }
         }};
     }
