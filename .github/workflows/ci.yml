@@ -24,8 +24,24 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
+  get-fuel-core-version:
+    runs-on: ubuntu-latest
+    outputs:
+      fuel_core_version: ${{ steps.get-version.outputs.fuel_core_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get fuel-core version
+        id: get-version
+        run: |
+          version=$(grep 'fuel-core-client' Cargo.toml | head -1 | sed -E 's/.*version = "([0-9]+\.[0-9]+)".*/\1/')
+          # Append .1 to get the patch version (e.g., 0.47 -> 0.47.1)
+          version="${version}.1"
+          echo "fuel_core_version=$version" >> $GITHUB_OUTPUT
+          echo "Detected fuel-core version: $version"
+
   publish-codecov:
     name: Check code coverage (branch)
+    needs: get-fuel-core-version
     runs-on: ubuntu-latest
     permissions: # Write access to push changes to pages
       contents: write
@@ -36,6 +52,13 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.NIGHTLY_RUST_VERSION }}
+
+      - name: Install fuel-core for tests
+        run: |
+          curl -sSLf https://github.com/FuelLabs/fuel-core/releases/download/v${{ needs.get-fuel-core-version.outputs.fuel_core_version }}/fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu.tar.gz -L -o fuel-core.tar.gz
+          tar -xvf fuel-core.tar.gz
+          chmod +x fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core
+          sudo mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
 
       - name: Install cargo-llvm-codecov
         uses: taiki-e/install-action@cargo-llvm-cov
@@ -84,7 +107,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
 
   cargo-verifications:
-    needs: cancel-previous-runs
+    needs: [cancel-previous-runs, get-fuel-core-version]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -109,6 +132,13 @@ jobs:
       - uses: Swatinem/rust-cache@v1
         with:
           key: "${{ matrix.command }}${{ matrix.args }}"
+      - name: Install fuel-core for tests
+        if: matrix.command == 'test'
+        run: |
+          curl -sSLf https://github.com/FuelLabs/fuel-core/releases/download/v${{ needs.get-fuel-core-version.outputs.fuel_core_version }}/fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu.tar.gz -L -o fuel-core.tar.gz
+          tar -xvf fuel-core.tar.gz
+          chmod +x fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core
+          sudo mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
       - name: ${{ matrix.command }} ${{ matrix.args }}
         uses: actions-rs/cargo@v1
         with:
