@@ -496,7 +496,7 @@ pub mod tests {
         cmd::Call {
             address: (*id).into(),
             abi: Some(cmd::call::AbiSource::File(PathBuf::from(
-                "../../forc-client/test/data/contract_with_types/contract_with_types-abi.json",
+                "test/data/contract_with_types/contract_with_types-abi.json",
             ))),
             function: Some(selector.to_string()),
             function_args: args.into_iter().map(String::from).collect(),
@@ -540,7 +540,7 @@ pub mod tests {
             .unwrap();
 
         let id = Contract::load_from(
-            "../../forc-client/test/data/contract_with_types/contract_with_types.bin",
+            "test/data/contract_with_types/contract_with_types.bin",
             LoadConfiguration::default(),
         )
         .unwrap()

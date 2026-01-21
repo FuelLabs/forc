@@ -393,7 +393,7 @@ pub(crate) mod tests {
             .unwrap();
 
         let id = Contract::load_from(
-            "../../forc-client/test/data/contract_with_types/contract_with_types.bin",
+            "test/data/contract_with_types/contract_with_types.bin",
             LoadConfiguration::default(),
         )
         .unwrap()
