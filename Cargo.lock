@@ -3455,7 +3455,8 @@ checksum = "1b9b46be43225f70c17f9e028f80a583c275fb2dec1e2a4e9100aa6385a2c86a"
 [[package]]
 name = "fuel-telemetry"
 version = "0.1.1"
-source = "git+https://github.com/FuelLabs/fuel-telemetry?branch=main#5c30418894954677d169489e103c71c887261f75"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31b6ff154c1f80b4b1a0ca31a4bf1883f48d30eef66ee2c47917b05ab9c44c5c"
 dependencies = [
  "base64 0.22.1",
  "chrono",
@@ -3477,7 +3478,8 @@ dependencies = [
 [[package]]
 name = "fuel-telemetry-macros"
 version = "0.1.1"
-source = "git+https://github.com/FuelLabs/fuel-telemetry?branch=main#5c30418894954677d169489e103c71c887261f75"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b81c8bba9a5be76590fabfb8741f9027bf593710ecce22d13e1b404c1d4ef692"
 dependencies = [
  "proc-macro2",
  "quote",
