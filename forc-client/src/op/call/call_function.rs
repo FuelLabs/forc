@@ -496,12 +496,18 @@ pub mod tests {
         cmd::Call {
             address: (*id).into(),
             abi: Some(cmd::call::AbiSource::File(PathBuf::from(
-                "../../forc-plugins/forc-client/test/data/contract_with_types/contract_with_types-abi.json",
+                "../../forc-client/test/data/contract_with_types/contract_with_types-abi.json",
             ))),
             function: Some(selector.to_string()),
             function_args: args.into_iter().map(String::from).collect(),
-            node: crate::NodeTarget { node_url: Some(node_url.to_string()), ..Default::default() },
-            caller: cmd::call::Caller { signing_key: Some(secret_key), wallet: false },
+            node: crate::NodeTarget {
+                node_url: Some(node_url.to_string()),
+                ..Default::default()
+            },
+            caller: cmd::call::Caller {
+                signing_key: Some(secret_key),
+                wallet: false,
+            },
             call_parameters: Default::default(),
             mode: cmd::call::ExecutionMode::DryRun,
             gas: None,
@@ -518,7 +524,7 @@ pub mod tests {
 
     abigen!(Contract(
         name = "TestContract",
-        abi = "forc-plugins/forc-client/test/data/contract_with_types/contract_with_types-abi.json"
+        abi = "forc-client/test/data/contract_with_types/contract_with_types-abi.json"
     ));
 
     pub async fn get_contract_instance() -> (TestContract<Wallet>, ContractId, Provider, SecretKey)
@@ -534,7 +540,7 @@ pub mod tests {
             .unwrap();
 
         let id = Contract::load_from(
-            "../../forc-plugins/forc-client/test/data/contract_with_types/contract_with_types.bin",
+            "../../forc-client/test/data/contract_with_types/contract_with_types.bin",
             LoadConfiguration::default(),
         )
         .unwrap()

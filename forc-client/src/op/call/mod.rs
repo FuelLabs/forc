@@ -377,7 +377,7 @@ pub(crate) mod tests {
 
     abigen!(Contract(
         name = "TestContract",
-        abi = "forc-plugins/forc-client/test/data/contract_with_types/contract_with_types-abi.json"
+        abi = "forc-client/test/data/contract_with_types/contract_with_types-abi.json"
     ));
 
     pub async fn get_contract_instance() -> (TestContract<Wallet>, ContractId, Provider, SecretKey)
@@ -393,7 +393,7 @@ pub(crate) mod tests {
             .unwrap();
 
         let id = Contract::load_from(
-            "../../forc-plugins/forc-client/test/data/contract_with_types/contract_with_types.bin",
+            "../../forc-client/test/data/contract_with_types/contract_with_types.bin",
             LoadConfiguration::default(),
         )
         .unwrap()
