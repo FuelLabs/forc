@@ -42,7 +42,7 @@ jobs:
   publish-codecov:
     name: Check code coverage (branch)
     needs: get-fuel-core-version
-    runs-on: ubuntu-latest
+    runs-on: warp-ubuntu-latest-x64-4x
     permissions: # Write access to push changes to pages
       contents: write
       pull-requests: write
@@ -52,13 +52,16 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.NIGHTLY_RUST_VERSION }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          cache-provider: "warpbuild"
 
       - name: Install fuel-core for tests
         run: |
           curl -sSLf https://github.com/FuelLabs/fuel-core/releases/download/v${{ needs.get-fuel-core-version.outputs.fuel_core_version }}/fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu.tar.gz -L -o fuel-core.tar.gz
           tar -xvf fuel-core.tar.gz
           chmod +x fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core
-          sudo mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
+          mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
 
       - name: Install cargo-llvm-codecov
         uses: taiki-e/install-action@cargo-llvm-cov
@@ -107,7 +110,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
 
   cargo-verifications:
-    needs: [cancel-previous-runs, get-fuel-core-version]
+    needs: [cancel-previous-runs]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -118,32 +121,52 @@ jobs:
             args: --all-targets --all-features
           - command: check
             args: --locked --all-targets --all-features
-          - command: test
-            args: --all-targets --all-features
-          - command: test
-            args: --all-targets --no-default-features
-    # disallow any job that takes longer than 30 minutes
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
-      - uses: Swatinem/rust-cache@v1
+          toolchain: ${{ env.RUST_VERSION }}
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
         with:
+          cache-provider: "github"
           key: "${{ matrix.command }}${{ matrix.args }}"
+      - name: ${{ matrix.command }} ${{ matrix.args }}
+        run: cargo ${{ matrix.command }} ${{ matrix.args }}
+        env:
+          RUSTFLAGS: "-D warnings"
+
+  cargo-test:
+    name: cargo test
+    needs: [cancel-previous-runs, get-fuel-core-version]
+    runs-on: warp-ubuntu-latest-x64-4x
+    strategy:
+      matrix:
+        include:
+          - args: --all-targets --all-features -- --test-threads 1
+          - args: --all-targets --no-default-features -- --test-threads 1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          cache-provider: "warpbuild"
+          key: "test${{ matrix.args }}"
       - name: Install fuel-core for tests
-        if: matrix.command == 'test'
         run: |
           curl -sSLf https://github.com/FuelLabs/fuel-core/releases/download/v${{ needs.get-fuel-core-version.outputs.fuel_core_version }}/fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu.tar.gz -L -o fuel-core.tar.gz
           tar -xvf fuel-core.tar.gz
           chmod +x fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core
-          sudo mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
-      - name: ${{ matrix.command }} ${{ matrix.args }}
-        uses: actions-rs/cargo@v1
-        with:
-          command: ${{ matrix.command }}
-          args: ${{ matrix.args }}
+          mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
+      - name: cargo test ${{ matrix.args }}
+        run: cargo test --locked ${{ matrix.args }}
+        env:
+          RUSTFLAGS: "-D warnings"
       - name: Notify if Job Fails
         uses: ravsamhq/notify-slack-action@v1
         if: always() && github.ref == 'refs/heads/master'
@@ -164,6 +187,7 @@ jobs:
     needs:
       - lint-toml-files
       - cargo-verifications
+      - cargo-test
     if: github.event_name == 'release' && github.event.action == 'published'
     runs-on: ubuntu-latest
 
