@@ -4,6 +4,7 @@ use anyhow::Result;
 use clap::Parser;
 use forc_crypto::{address, keccak256, keys, sha256, Command};
 use forc_tracing::{init_tracing_subscriber, println_error};
+
 use std::{
     default::Default,
     io::{stdin, stdout, IsTerminal, Read, Write},
@@ -11,9 +12,11 @@ use std::{
 use termion::screen::IntoAlternateScreen;
 
 fn main() {
-    init_tracing_subscriber(Default::default());
+    let guard = init_tracing_subscriber(Default::default());
+
     if let Err(err) = run() {
         println_error(&format!("{err}"));
+        drop(guard);
         std::process::exit(1);
     }
 }

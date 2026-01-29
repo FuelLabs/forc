@@ -3,8 +3,8 @@ name = "forc-tracing"
 # When releasing to crates.io:
 # - Remove path dependencies
 # - Update CHANGELOG.md.
-# - Create "forc-tracing-0.71.x" git tag.
-version = "0.71.1"
+# - Create "forc-tracing-0.72.x" git tag.
+version = "0.72.0"
 description = "Tracing utility shared between forc crates."
 edition = "2021"
 authors.workspace = true
@@ -12,8 +12,14 @@ homepage.workspace = true
 license.workspace = true
 repository.workspace = true
 
+[features]
+default = ["telemetry"]
+telemetry = ["dep:fuel-telemetry"]
+
 [dependencies]
 ansiterm.workspace = true
+anyhow.workspace = true
+fuel-telemetry = { workspace = true, optional = true }
 regex.workspace = true
 tracing.workspace = true
 tracing-subscriber = { workspace = true, features = ["ansi", "env-filter", "json"] }

@@ -15,9 +15,12 @@ path = "src/lib.rs"
 name = "forc-node"
 path = "src/main.rs"
 
+[features]
+default = ["telemetry"]
+telemetry = ["forc-tracing/telemetry"]
+
 [dependencies]
 anyhow.workspace = true
-openssl.workspace = true
 clap = { workspace = true, features = ["derive", "string"] }
 dialoguer.workspace = true
 forc-tracing.workspace = true
@@ -28,6 +31,7 @@ fuel-core-types.workspace = true
 fuel-crypto = { workspace = true, features = ["random"] }
 libc.workspace = true
 libp2p-identity = { workspace = true, features = ["secp256k1", "peerid"] }
+openssl.workspace = true
 reqwest = { workspace = true, features = ["json"] }
 semver.workspace = true
 serde.workspace = true
