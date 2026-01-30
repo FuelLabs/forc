@@ -13,7 +13,6 @@ env:
   RUSTFLAGS: -D warnings
   REGISTRY: ghcr.io
   RUST_VERSION: 1.90.0
-  NIGHTLY_RUST_VERSION: nightly-2025-09-28
 
 jobs:
   cancel-previous-runs:
@@ -38,48 +37,6 @@ jobs:
           version="${version}.1"
           echo "fuel_core_version=$version" >> $GITHUB_OUTPUT
           echo "Detected fuel-core version: $version"
-
-  publish-codecov:
-    name: Check code coverage (branch)
-    needs: get-fuel-core-version
-    runs-on: warp-ubuntu-latest-x64-4x
-    permissions: # Write access to push changes to pages
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install latest Rust
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ env.NIGHTLY_RUST_VERSION }}
-      - uses: Swatinem/rust-cache@v2
-        with:
-          cache-provider: "warpbuild"
-
-      - name: Install fuel-core for tests
-        run: |
-          curl -sSLf https://github.com/FuelLabs/fuel-core/releases/download/v${{ needs.get-fuel-core-version.outputs.fuel_core_version }}/fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu.tar.gz -L -o fuel-core.tar.gz
-          tar -xvf fuel-core.tar.gz
-          chmod +x fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core
-          mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
-
-      - name: Install cargo-llvm-codecov
-        uses: taiki-e/install-action@cargo-llvm-cov
-
-      - name: Code coverage report
-        run: cargo +${{ env.NIGHTLY_RUST_VERSION }} llvm-cov --all-features --lcov --branch --output-path lcov.info
-
-      - name: Setup LCOV
-        uses: hrishikesh-kadam/setup-lcov@v1
-
-      - name: Report code coverage
-        uses: zgosalvez/github-actions-report-lcov@v4
-        with:
-          coverage-files: lcov.info
-          minimum-coverage: 0 # for now we are not enforcing any minimum coverage.
-          artifact-name: code-coverage-report
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          update-comment: true
 
   lint-toml-files:
     needs: cancel-previous-runs
