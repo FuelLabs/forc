@@ -26,15 +26,7 @@ use std::{
     str::FromStr,
 };
 use tempfile::tempdir;
-use toml_edit::{value, DocumentMut, InlineTable, Item, Table, Value};
-
-fn get_workspace_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../")
-        .join("../")
-        .canonicalize()
-        .unwrap()
-}
+use toml_edit::{value, DocumentMut, Item, Table};
 
 fn test_data_path() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -103,11 +95,6 @@ fn expect_deployed_predicate(deployed_package: DeployedPackage) -> DeployedExecu
     } else {
         panic!("expected deployed package to be a predicate")
     }
-}
-
-fn patch_manifest_file_with_path_std(_manifest_dir: &Path) -> anyhow::Result<()> {
-    // No longer needed - test projects now use implicit-std = true
-    Ok(())
 }
 
 fn patch_manifest_file_with_proxy_table(manifest_dir: &Path, proxy: Proxy) -> anyhow::Result<()> {
@@ -341,7 +328,6 @@ async fn test_simple_deploy() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let pkg = Pkg {
         path: Some(tmp_dir.path().display().to_string()),
@@ -383,7 +369,6 @@ async fn test_deploy_submit_only() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let pkg = Pkg {
         path: Some(tmp_dir.path().display().to_string()),
@@ -427,7 +412,6 @@ async fn test_deploy_fresh_proxy() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
     let proxy = Proxy {
         enabled: true,
         address: None,
@@ -480,7 +464,6 @@ async fn test_proxy_contract_re_routes_call() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
     let proxy = Proxy {
         enabled: true,
         address: None,
@@ -616,7 +599,6 @@ async fn test_non_owner_fails_to_set_target() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
     let proxy = Proxy {
         enabled: true,
         address: None,
@@ -726,7 +708,6 @@ async fn chunked_deploy() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("big_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let pkg = Pkg {
         path: Some(tmp_dir.path().display().to_string()),
@@ -760,7 +741,6 @@ async fn chunked_deploy_re_routes_calls() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("big_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let pkg = Pkg {
         path: Some(tmp_dir.path().display().to_string()),
@@ -800,7 +780,6 @@ async fn chunked_deploy_with_proxy_re_routes_call() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("big_contract");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
     let proxy = Proxy {
         enabled: true,
         address: None,
@@ -845,7 +824,6 @@ async fn can_deploy_script() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("deployed_script");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let node_url = format!("http://127.0.0.1:{port}/v1/graphql");
     let target = NodeTarget {
@@ -877,7 +855,6 @@ async fn deploy_script_calls() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("deployed_script");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let node_url = format!("http://127.0.0.1:{port}/v1/graphql");
     let target = NodeTarget {
@@ -905,7 +882,6 @@ async fn deploy_script_calls() {
     let contract_tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, contract_tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(contract_tmp_dir.path()).unwrap();
 
     let pkg = Pkg {
         path: Some(contract_tmp_dir.path().display().to_string()),
@@ -1003,7 +979,6 @@ async fn can_deploy_predicates() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("deployed_predicate");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let node_url = format!("http://127.0.0.1:{port}/v1/graphql");
     let target = NodeTarget {
@@ -1035,7 +1010,6 @@ async fn deployed_predicate_call() {
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("deployed_predicate");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let node_url = format!("http://127.0.0.1:{port}/v1/graphql");
     let target = NodeTarget {
@@ -1199,7 +1173,6 @@ async fn call_with_forc_generated_overrides(node_url: &str, contract_id: Contrac
     let tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("deployed_script");
     copy_dir(&project_dir, tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(tmp_dir.path()).unwrap();
 
     let target = NodeTarget {
         node_url: Some(node_url.to_string()),
@@ -1304,7 +1277,6 @@ async fn offset_shifted_abi_works() {
     let contract_tmp_dir = tempdir().unwrap();
     let project_dir = test_data_path().join("standalone_contract");
     copy_dir(&project_dir, contract_tmp_dir.path()).unwrap();
-    patch_manifest_file_with_path_std(contract_tmp_dir.path()).unwrap();
 
     let pkg = Pkg {
         path: Some(contract_tmp_dir.path().display().to_string()),
