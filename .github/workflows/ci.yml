@@ -102,8 +102,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - args: --all-targets --all-features -- --test-threads 1
-          - args: --all-targets --no-default-features -- --test-threads 1
+          - args: --all-features -- --test-threads 1
+          - args: --no-default-features -- --test-threads 1
     steps:
       - uses: actions/checkout@v3
       - name: Install toolchain
