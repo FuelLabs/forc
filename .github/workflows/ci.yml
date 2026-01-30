@@ -164,7 +164,7 @@ jobs:
           chmod +x fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core
           mv fuel-core-${{ needs.get-fuel-core-version.outputs.fuel_core_version }}-x86_64-unknown-linux-gnu/fuel-core /usr/local/bin/fuel-core
       - name: cargo test ${{ matrix.args }}
-        run: cargo test --locked ${{ matrix.args }}
+        run: cargo test --locked --release ${{ matrix.args }}
         env:
           RUSTFLAGS: "-D warnings"
       - name: Notify if Job Fails
