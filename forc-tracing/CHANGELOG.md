@@ -1,3 +1,16 @@
+# 0.72.0 (January 26th, 2026)
+
+### Added
+
+- Initial telemetry integration via `fuel-telemetry` crate (enabled via `telemetry` feature)
+- Telemetry macros: `info_telemetry!`, `debug_telemetry!`, `warn_telemetry!`, `error_telemetry!`, `trace_telemetry!`, `span_telemetry!`
+- Support for `Stdout` tracing writer mode
+
+### Changed
+
+- `init_tracing_subscriber()` now returns `anyhow::Result<Option<WorkerGuard>>` instead of using global static storage
+- Log level filter now only applies when explicitly set via CLI flags (previously defaulted to `INFO`)
+
 # 0.71.1 (December 9th, 2025)
 
 ### Fixed

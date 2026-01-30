@@ -12,11 +12,15 @@ homepage.workspace = true
 license.workspace = true
 repository.workspace = true
 
+[features]
+default = ["telemetry"]
+telemetry = ["forc-tracing/telemetry"]
+
 [dependencies]
 anyhow.workspace = true
 clap = { workspace = true, features = ["derive"] }
 eth-keystore.workspace = true
-forc-tracing = "0.70.2"
+forc-tracing.workspace = true
 fuels = "0.75"
 futures.workspace = true
 hex.workspace = true

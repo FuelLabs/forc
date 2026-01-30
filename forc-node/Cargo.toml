@@ -15,6 +15,10 @@ path = "src/lib.rs"
 name = "forc-node"
 path = "src/main.rs"
 
+[features]
+default = ["telemetry"]
+telemetry = ["forc-tracing/telemetry"]
+
 [dependencies]
 anyhow.workspace = true
 clap = { workspace = true, features = ["derive", "string"] }
