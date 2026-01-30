@@ -6,7 +6,7 @@ async fn main() {
     let command = forc_client::cmd::Call::parse();
 
     // Initialize tracing with verbosity from command
-    init_tracing_subscriber(TracingSubscriberOptions {
+    let _ = init_tracing_subscriber(TracingSubscriberOptions {
         verbosity: Some(command.verbosity),
         writer_mode: Some(command.output.clone().into()),
         regex_filter: Some("forc_tracing".to_string()),
