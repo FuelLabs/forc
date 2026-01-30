@@ -105,18 +105,8 @@ fn expect_deployed_predicate(deployed_package: DeployedPackage) -> DeployedExecu
     }
 }
 
-fn patch_manifest_file_with_path_std(manifest_dir: &Path) -> anyhow::Result<()> {
-    let toml_path = manifest_dir.join(sway_utils::constants::MANIFEST_FILE_NAME);
-    let toml_content = fs::read_to_string(&toml_path).unwrap();
-
-    let mut doc = toml_content.parse::<DocumentMut>().unwrap();
-    let new_std_path = get_workspace_root().join("sway-lib-std");
-
-    let mut std_dependency = InlineTable::new();
-    std_dependency.insert("path", Value::from(new_std_path.display().to_string()));
-    doc["dependencies"]["std"] = Item::Value(Value::InlineTable(std_dependency));
-
-    fs::write(&toml_path, doc.to_string()).unwrap();
+fn patch_manifest_file_with_path_std(_manifest_dir: &Path) -> anyhow::Result<()> {
+    // No longer needed - test projects now use implicit-std = true
     Ok(())
 }
 

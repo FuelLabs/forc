@@ -1,7 +1,7 @@
 [project]
 authors = ["Fuel Labs <contact@fuel.sh>"]
 entry = "main.sw"
-implicit-std = false
+implicit-std = true
 license = "Apache-2.0"
 name = "standalone_contract"
 
