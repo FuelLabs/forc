@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "forc-client",
     "forc-crypto",
     "forc-node",
     "forc-tracing",
@@ -17,32 +18,61 @@ repository = "https://github.com/FuelLabs/forc"
 [workspace.dependencies]
 # Internal dependencies
 forc-tracing = { version = "0.72.0", path = "forc-tracing" }
+forc-wallet = { version = "0.16.2", path = "forc-wallet" }
+
+# Sway dependencies (from crates.io)
+sway-core = "0.70.3"
+sway-features = "0.70.3"
+sway-types = "0.70.3"
+sway-utils = "0.70.3"
+
+# Forc dependencies (from crates.io)
+forc = "0.70.3"
+forc-debug = "0.70.3"
+forc-pkg = "0.70.3"
+forc-tx = "0.70.3"
+forc-util = "0.70.3"
 
 # External Fuel dependencies
+fuel-abi-types = "0.15"
 fuel-core = { version = "0.47", default-features = false }
 fuel-core-chain-config = { version = "0.47", default-features = false }
+fuel-core-client = { version = "0.47", default-features = false }
+fuel-core-storage = { version = "0.47", default-features = false }
 fuel-core-types = { version = "0.47", default-features = false }
 fuel-crypto = "0.65"
 fuel-telemetry = "0.1.1"
-forc-util = "0.70.2"
+fuel-tx = "0.65"
+fuel-vm = "0.65"
+fuels = "0.76"
+fuels-accounts = "0.76"
+fuels-core = "0.76"
 
 # External dependencies
 ansiterm = "0.12"
 anyhow = "1.0"
 async-trait = "0.1"
+aws-config = "1.1"
+aws-sdk-kms = "1.15"
+chrono = "0.4"
 clap = "4.5"
 criterion = "0.5"
+devault = "0.2"
 dialoguer = "0.11"
+either = "1.9"
 eth-keystore = "0.5"
 futures = { version = "0.3", default-features = false }
 hex = "0.4"
 home = "0.5"
+k256 = "0.13"
 libc = "0.2"
 libp2p-identity = "0.2"
 portpicker = "0.1"
+pretty_assertions = "1.4"
 rand = "0.8"
 rayon = "1.7"
 regex = "1.10"
+rexpect = "0.5"
 openssl = { version = "0.10", features = ["vendored"] }
 reqwest = "0.12"
 rpassword = "7.2"
@@ -55,6 +85,7 @@ sha3 = "0.10"
 tempfile = "3"
 termion = "4.0"
 tokio = "1.48"
+toml_edit = "0.22"
 tracing = "0.1"
 tracing-subscriber = "0.3.19"
 tracing-test = "0.2"

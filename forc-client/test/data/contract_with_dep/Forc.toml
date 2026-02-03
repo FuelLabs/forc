@@ -1,0 +1,12 @@
+[project]
+authors = ["Fuel Labs <contact@fuel.sh>"]
+entry = "main.sw"
+implicit-std = true
+license = "Apache-2.0"
+name = "contract_with_dep"
+
+[dependencies]
+
+
+[contract-dependencies]
+standalone_contract = { path = "../standalone_contract", salt = "0x0000000000000000000000000000000000000000000000000000000000000001" }
