@@ -1,3 +1,7 @@
+# 0.71.1 (February 4th, 2026)
+
+- First release from `FuelLabs/forc` repository
+
 # 0.71.0 (February 3rd, 2026)
 
 - Previous release from `FuelLabs/sway` repository
