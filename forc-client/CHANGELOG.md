@@ -1,4 +1,4 @@
-# 0.71.0 (January 21st, 2026)
+# 0.71.0 (February 3rd, 2026)
 
 - Previous release from `FuelLabs/sway` repository
 
