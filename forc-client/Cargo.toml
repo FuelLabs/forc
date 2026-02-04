@@ -1,6 +1,6 @@
 [package]
 name = "forc-client"
-version = "0.71.0"
+version = "0.71.1"
 edition = "2021"
 description = "A `forc` plugin for interacting with a Fuel node."
 authors.workspace = true
