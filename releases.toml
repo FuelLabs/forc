@@ -28,3 +28,11 @@ date = "2026-01-08"
 fuel-core = "0.47.1"
 fuel-core-types = "0.47.1"
 
+[[releases]]
+crate = "forc-client"
+version = "0.71.0"
+date = "2026-02-03"
+sway = "0.70.3"
+fuel-core-types = "0.47.1"
+fuels-rs = "0.76.0"
+
