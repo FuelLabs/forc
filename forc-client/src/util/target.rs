@@ -8,18 +8,15 @@ use std::str::FromStr;
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 /// Possible target values that forc-client can interact with.
+#[derive(Default)]
 pub enum Target {
     Mainnet,
     Testnet,
     Devnet,
+    #[default]
     Local,
 }
 
-impl Default for Target {
-    fn default() -> Self {
-        Self::Local
-    }
-}
 
 impl Target {
     pub fn target_url(&self) -> String {
