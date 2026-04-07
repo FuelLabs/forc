@@ -17,7 +17,6 @@ pub enum Target {
     Local,
 }
 
-
 impl Target {
     pub fn target_url(&self) -> String {
         let url = match self {
