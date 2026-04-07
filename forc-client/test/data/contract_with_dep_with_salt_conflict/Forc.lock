@@ -1,0 +1,23 @@
+[[package]]
+name = "contract_with_dep"
+source = "path+from-root-144A1C8B9DFF4646"
+dependencies = ["std"]
+contract-dependencies = ["standalone_contract (0000000000000000000000000000000000000000000000000000000000000001)"]
+
+[[package]]
+name = "contract_with_dep_with_salt_conflict"
+source = "member"
+dependencies = ["std"]
+contract-dependencies = [
+    "contract_with_dep",
+    "standalone_contract (0000000000000000000000000000000000000000000000000000000000000001)",
+]
+
+[[package]]
+name = "standalone_contract"
+source = "path+from-root-144A1C8B9DFF4646"
+dependencies = ["std"]
+
+[[package]]
+name = "std"
+source = "git+https://github.com/FuelLabs/sway?default-branch#cd2aa3562318186e6316edc89721084c69099f56"

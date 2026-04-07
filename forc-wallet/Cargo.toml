@@ -4,7 +4,7 @@ name = "forc-wallet"
 # - Remove path dependencies
 # - Update CHANGELOG.md.
 # - Create "forc-wallet-0.16.x" git tag.
-version = "0.16.2"
+version = "0.16.3"
 description = "A forc plugin for generating or importing wallets using mnemonic phrases."
 edition = "2024"
 authors.workspace = true
@@ -21,7 +21,7 @@ anyhow.workspace = true
 clap = { workspace = true, features = ["derive"] }
 eth-keystore.workspace = true
 forc-tracing.workspace = true
-fuels = "0.75"
+fuels.workspace = true
 futures.workspace = true
 hex.workspace = true
 home.workspace = true
@@ -41,6 +41,6 @@ name = "forc-wallet"
 path = "src/main.rs"
 
 [dev-dependencies]
-fuel-core-client = "0.46.0"
+fuel-core-client.workspace = true
 tempfile = "3.19"
 wiremock = "0.6"

@@ -1,11 +1,12 @@
 [project]
 authors = ["Fuel Labs <contact@fuel.sh>"]
 entry = "main.sw"
-implicit-std = true
 license = "Apache-2.0"
 name = "contract_with_dep"
+implicit-std = false
 
 [dependencies]
+std = { git = "https://github.com/FuelLabs/sway" }
 
 
 [contract-dependencies]

@@ -12,7 +12,7 @@ env:
   CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
   REGISTRY: ghcr.io
-  RUST_VERSION: 1.90.0
+  RUST_VERSION: 1.93.0
 
 jobs:
   cancel-previous-runs:
@@ -28,7 +28,7 @@ jobs:
     outputs:
       fuel_core_version: ${{ steps.get-version.outputs.fuel_core_version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Get fuel-core version
         id: get-version
         run: |
@@ -42,7 +42,7 @@ jobs:
     needs: cancel-previous-runs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -59,10 +59,10 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: '{workflow} has {status_message}'
-          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>'
-          footer: ''
-          notify_when: 'failure'
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>"
+          footer: ""
+          notify_when: "failure"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
 
@@ -80,7 +80,7 @@ jobs:
             args: --locked --all-targets --all-features
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -105,7 +105,7 @@ jobs:
           - args: --all-features -- --test-threads 1
           - args: --no-default-features -- --test-threads 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -130,14 +130,13 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: '{workflow} has {status_message}'
-          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>'
-          footer: ''
-          notify_when: 'failure'
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>"
+          footer: ""
+          notify_when: "failure"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_NOTIFY_BUILD }}
           RUSTFLAGS: -D warnings
-
 
   publish-crates:
     # Only do this job if publishing a release
@@ -150,7 +149,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Install toolchain
         uses: actions-rs/toolchain@v1
@@ -180,10 +179,10 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: '{workflow} has {status_message}'
-          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>'
-          footer: ''
-          notify_when: 'failure'
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>"
+          footer: ""
+          notify_when: "failure"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TOOLING }}
 
@@ -217,7 +216,7 @@ jobs:
             target_suffix: darwin_arm64
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Extract crate name from tag
         id: extract_crate
@@ -356,7 +355,7 @@ jobs:
 
     steps:
       - name: Checkout release tag
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
 

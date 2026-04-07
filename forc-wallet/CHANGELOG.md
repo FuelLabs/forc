@@ -1,3 +1,11 @@
+# 0.16.3 (April 7th, 2026)
+
+### Changed
+
+- chore: bump `fuels-rs` to 0.77, `fuel-vm` to 0.66, `fuel-core` to 0.48
+
+No functional changes from v0.16.2.
+
 # 0.16.2 (December 6th, 2025)
 
 No functional changes. Version bump to test `releases.toml` automation.

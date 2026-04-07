@@ -2,7 +2,7 @@ use fuel_core_storage::column::Column;
 use fuel_core_types::{services::executor::StorageReadReplayEvent, tai64::Tai64};
 use fuel_vm::{
     error::{InterpreterError, RuntimeError},
-    fuel_storage::{StorageRead, StorageSize, StorageWrite},
+    fuel_storage::{StorageRead, StorageReadError, StorageSize, StorageWrite},
     fuel_types::BlockHeight,
     prelude::*,
     storage::{
@@ -118,27 +118,56 @@ macro_rules! storage_rw {
         }
 
         impl StorageRead<$vm_type> for ShallowStorage {
-            fn read(
+            fn read_exact(
                 &self,
                 key: &<$vm_type as fuel_vm::fuel_storage::Mappable>::Key,
                 offset: usize,
                 buf: &mut [u8],
-            ) -> Result<bool, Self::Error> {
+            ) -> Result<Result<usize, StorageReadError>, Self::Error> {
                 tracing::debug!(
-                    "{} read {}",
+                    "{} read_exact {}",
                     stringify!($core_column),
                     hex::encode(&$convert_key(key)),
                 );
                 let head = self.value_of_column(Column::$core_column, $convert_key(key));
                 let Some(value) = head else {
-                    return Ok(false);
+                    return Ok(Err(StorageReadError::KeyNotFound));
                 };
 
-                if offset > value.len() || offset.saturating_add(buf.len()) > value.len() {
-                    return Err(Error::CannotRead);
+                if offset >= value.len() || offset.saturating_add(buf.len()) > value.len() {
+                    return Ok(Err(StorageReadError::OutOfBounds));
                 }
+
                 buf.copy_from_slice(&value[offset..][..buf.len()]);
-                Ok(true)
+                Ok(Ok(value.len()))
+            }
+
+            fn read_zerofill(
+                &self,
+                key: &<$vm_type as fuel_vm::fuel_storage::Mappable>::Key,
+                offset: usize,
+                buf: &mut [u8],
+            ) -> Result<Result<usize, StorageReadError>, Self::Error> {
+                tracing::debug!(
+                    "{} read_zerofill {}",
+                    stringify!($core_column),
+                    hex::encode(&$convert_key(key)),
+                );
+                let head = self.value_of_column(Column::$core_column, $convert_key(key));
+                let Some(value) = head else {
+                    return Ok(Err(StorageReadError::KeyNotFound));
+                };
+
+                if offset >= value.len() {
+                    return Ok(Err(StorageReadError::OutOfBounds));
+                }
+
+                let src = &value[offset..];
+                let (dst, rest) = buf.split_at_mut(buf.len().min(src.len()));
+                dst.copy_from_slice(&src[..dst.len()]);
+                rest.fill(0);
+
+                Ok(Ok(value.len()))
             }
 
             fn read_alloc(
@@ -341,97 +370,27 @@ impl InterpreterStorage for ShallowStorage {
         unreachable!("Cannot be called by a script");
     }
 
-    fn contract_state_range(
-        &self,
-        id: &fuel_vm::prelude::ContractId,
-        start_key: &fuel_vm::prelude::Bytes32,
-        range: usize,
-    ) -> Result<
-        Vec<Option<std::borrow::Cow<'_, fuel_vm::storage::ContractsStateData>>>,
-        Self::DataError,
-    > {
-        tracing::debug!("contract_state_range {id:?} {start_key:?} {range:?}");
-
-        let mut results = Vec::new();
-        let mut key = U256::from_big_endian(start_key.as_ref());
-        let mut key_buffer = Bytes32::zeroed();
-        for offset in 0..(range as u64) {
-            if offset != 0 {
-                key = key.checked_add(1.into()).ok_or(Error::KeyspaceOverflow)?;
-            }
-
-            key.to_big_endian(key_buffer.as_mut());
-            let state_key = ContractsStateKey::new(id, &key_buffer);
-            let value = self
-                .storage::<fuel_vm::storage::ContractsState>()
-                .get(&state_key)?;
-            results.push(value);
-        }
-        Ok(results)
-    }
-
-    fn contract_state_insert_range<'a, I>(
-        &mut self,
-        contract: &fuel_vm::prelude::ContractId,
-        start_key: &fuel_vm::prelude::Bytes32,
-        values: I,
-    ) -> Result<usize, Self::DataError>
-    where
-        I: Iterator<Item = &'a [u8]>,
-    {
-        tracing::debug!("contract_state_insert_range {contract:?} {start_key:?}");
-
-        let values: Vec<_> = values.collect();
-        let mut key = U256::from_big_endian(start_key.as_ref());
-        let mut key_buffer = Bytes32::zeroed();
-
-        let mut found_unset = 0u32;
-        for (idx, value) in values.iter().enumerate() {
-            if idx != 0 {
-                key = key.checked_add(1.into()).ok_or(Error::KeyspaceOverflow)?;
-            }
-
-            key.to_big_endian(key_buffer.as_mut());
-            let option = self.storage::<ContractsState>().replace(
-                &(contract, Bytes32::from_bytes_ref(&key_buffer)).into(),
-                value,
-            )?;
-
-            if option.is_none() {
-                found_unset += 1;
-            }
-        }
-
-        Ok(found_unset as usize)
-    }
-
     fn contract_state_remove_range(
         &mut self,
         contract: &fuel_vm::prelude::ContractId,
         start_key: &fuel_vm::prelude::Bytes32,
         range: usize,
-    ) -> Result<Option<()>, Self::DataError> {
+    ) -> Result<(), Self::DataError> {
         tracing::debug!("contract_state_remove_range {contract:?} {start_key:?}");
 
         let mut key = U256::from_big_endian(start_key.as_ref());
         let mut key_buffer = Bytes32::zeroed();
 
-        let mut found_unset = false;
         for idx in 0..range {
             if idx != 0 {
                 key = key.checked_add(1.into()).ok_or(Error::KeyspaceOverflow)?;
             }
 
             key.to_big_endian(key_buffer.as_mut());
-            let option = self
-                .storage::<ContractsState>()
-                .take(&(contract, Bytes32::from_bytes_ref(&key_buffer)).into())?;
-
-            if option.is_none() {
-                found_unset = true;
-            }
+            self.storage::<ContractsState>()
+                .remove(&(contract, Bytes32::from_bytes_ref(&key_buffer)).into())?;
         }
 
-        Ok(if found_unset { None } else { Some(()) })
+        Ok(())
     }
 }

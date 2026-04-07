@@ -468,6 +468,7 @@ pub(crate) async fn transfer_cli(
                 None,
                 None,
                 transfer.gas_limit,
+                None,
             ),
         )
         .await?;

@@ -1,3 +1,9 @@
+# 0.71.1 (April 7th, 2026)
+
+- chore: bump `fuels-rs` to 0.77, `fuel-vm` to 0.66, `fuel-core` to 0.48
+
+No functional changes from v0.71.0.
+
 # 0.71.0 (December 8th, 2025)
 
 ### Changed

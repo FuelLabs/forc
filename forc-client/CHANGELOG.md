@@ -1,3 +1,7 @@
+# 0.71.2 (April 7th, 2026)
+
+- Bump `fuels-rs` to 0.77, `fuel-vm` to 0.66, and `fuel-core` to 0.48
+
 # 0.71.1 (February 4th, 2026)
 
 - First release from `FuelLabs/forc` repository
