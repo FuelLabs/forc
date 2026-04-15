@@ -3757,8 +3757,9 @@ checksum = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
 
 [[package]]
 name = "forc"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d2f5946264d14f59ff92759c054daad7648e357fa5ac09eb7493ba43aef8d5e"
 dependencies = [
  "annotate-snippets",
  "ansiterm",
@@ -3878,8 +3879,9 @@ dependencies = [
 
 [[package]]
 name = "forc-debug"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "497be4ac43ed06a2d41c6c2759d36791e8bb55d96d3bdcff40accbfc73978e12"
 dependencies = [
  "anyhow",
  "clap",
@@ -3939,8 +3941,9 @@ dependencies = [
 
 [[package]]
 name = "forc-pkg"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97da0d1783c542edca85a8c5865c8d4c5ad5eee30738e32c448db2b56f0490fe"
 dependencies = [
  "ansiterm",
  "anyhow",
@@ -3982,8 +3985,9 @@ dependencies = [
 
 [[package]]
 name = "forc-test"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "573fb2d57c9e4b5e589dd337ef60e0c8264a15f3f6f0702c56a999c78be55395"
 dependencies = [
  "anyhow",
  "forc-pkg",
@@ -4027,8 +4031,9 @@ dependencies = [
 
 [[package]]
 name = "forc-tx"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0027e2995e90eba2fff7d31f72004ea23727c8d282a6c5e29a3216ab9dade5a5"
 dependencies = [
  "anyhow",
  "clap",
@@ -4044,8 +4049,9 @@ dependencies = [
 
 [[package]]
 name = "forc-util"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9fb72b0bab16cb934ca2632db9368cf9cb82054b766ea968c1fb777ce69f3f3c"
 dependencies = [
  "annotate-snippets",
  "ansiterm",
@@ -10395,8 +10401,9 @@ checksum = "734676eb262c623cec13c3155096e08d1f8f29adce39ba17948b18dad1e54142"
 
 [[package]]
 name = "sway-ast"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8b8d9acebc1715f48a0ef9e8131dced9ca5d2766137f19e7f0186aa31d022cb3"
 dependencies = [
  "extension-trait",
  "num-bigint",
@@ -10408,8 +10415,9 @@ dependencies = [
 
 [[package]]
 name = "sway-core"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee527d3b5d038ba0b20903e9f89b8bb8dd7bc8580613538a808cb6a2b678db0f"
 dependencies = [
  "clap",
  "dirs 5.0.1",
@@ -10455,8 +10463,9 @@ dependencies = [
 
 [[package]]
 name = "sway-error"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2211a2fe279184813a03d473537701d0aaadcf8e55cd89006d43333eabccd625"
 dependencies = [
  "either",
  "in_definite",
@@ -10469,8 +10478,9 @@ dependencies = [
 
 [[package]]
 name = "sway-features"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "854c8cc3a857d471e067bcd5e8fa270d5f5b7492ac73b9c8c769a927d579b4a2"
 dependencies = [
  "clap",
  "paste",
@@ -10480,8 +10490,9 @@ dependencies = [
 
 [[package]]
 name = "sway-ir"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a371d2f4f539576d72f3ae675e9f8841fc65a196402fb86faa0645307b77395a"
 dependencies = [
  "anyhow",
  "downcast-rs",
@@ -10502,8 +10513,9 @@ dependencies = [
 
 [[package]]
 name = "sway-ir-macros"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "afa1284a2edba1364c3e33b51055c4c5b6e246f25b7de2e46dd5e15dcc7c5965"
 dependencies = [
  "itertools 0.13.0",
  "proc-macro2",
@@ -10513,8 +10525,9 @@ dependencies = [
 
 [[package]]
 name = "sway-parse"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4208b8d2a6ce54b16d66167e68ec4825a632209e230b1803c1715d6e176e6b8"
 dependencies = [
  "extension-trait",
  "num-bigint",
@@ -10531,8 +10544,9 @@ dependencies = [
 
 [[package]]
 name = "sway-types"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "044ef1fc01494e4879b2fe4e17e805d4f0b3a42e5156904673e02aece2a05f57"
 dependencies = [
  "fuel-asm",
  "fuel-crypto",
@@ -10551,8 +10565,9 @@ dependencies = [
 
 [[package]]
 name = "sway-utils"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "077dfc27460a79a80bc0ca3a0270bfe7637a8ea48c19193c8aae72f5a53313fd"
 dependencies = [
  "serde",
  "walkdir",
@@ -10560,8 +10575,9 @@ dependencies = [
 
 [[package]]
 name = "swayfmt"
-version = "0.70.3"
-source = "git+https://github.com/FuelLabs/sway?branch=ironcev%2Fdynamic-storage-srw#33b1b1bf36cd0b6eaf58d016ee4fb85902363d02"
+version = "0.71.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ef878ac940ead343738329c8a5ef156b26c70837f0f24253be63ba66ac53bf5e"
 dependencies = [
  "anyhow",
  "forc-tracing 0.71.1",

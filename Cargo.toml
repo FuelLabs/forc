@@ -21,17 +21,17 @@ forc-tracing = { version = "0.72.1", path = "forc-tracing" }
 forc-wallet = { version = "0.16.3", path = "forc-wallet" }
 
 # Sway dependencies (from crates.io)
-sway-core = "0.70.3"
-sway-features = "0.70.3"
-sway-types = "0.70.3"
-sway-utils = "0.70.3"
+sway-core = "0.71.0"
+sway-features = "0.71.0"
+sway-types = "0.71.0"
+sway-utils = "0.71.0"
 
 # Forc dependencies (from crates.io)
-forc = "0.70.3"
-forc-debug = "0.70.3"
-forc-pkg = "0.70.3"
-forc-tx = "0.70.3"
-forc-util = "0.70.3"
+forc = "0.71.0"
+forc-debug = "0.71.0"
+forc-pkg = "0.71.0"
+forc-tx = "0.71.0"
+forc-util = "0.71.0"
 
 # External Fuel dependencies (from crates.io)
 fuel-abi-types = "0.15"
@@ -98,16 +98,3 @@ missing_docs = "allow"
 
 [workspace.lints.clippy]
 all = "warn"
-
-[patch.crates-io]
-sway-core = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-sway-features = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-sway-types = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-sway-utils = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-
-# Forc dependencies (from crates.io)
-forc = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-forc-debug = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-forc-pkg = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-forc-tx = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
-forc-util = { git = "https://github.com/FuelLabs/sway", branch = "ironcev/dynamic-storage-srw" }
