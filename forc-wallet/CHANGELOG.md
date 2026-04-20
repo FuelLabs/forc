@@ -1,3 +1,9 @@
+# 0.16.4 (April 20th, 2026)
+
+### Fixed
+
+- Use vendored OpenSSL for cross-compilation to avoid system package dependencies
+
 # 0.16.3 (April 7th, 2026)
 
 ### Changed

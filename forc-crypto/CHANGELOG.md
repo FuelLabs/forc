@@ -4,6 +4,10 @@
 
 - deps: update compatibility to `fuel-core` 0.48, `fuel-crypto` 0.66, and `fuels-rs` 0.77
 
+### Fixed
+
+- Use vendored OpenSSL for cross-compilation to avoid system package dependencies
+
 # 0.71.0 (December 8th, 2025)
 
 ### Changed

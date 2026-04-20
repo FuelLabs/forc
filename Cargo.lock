@@ -3827,6 +3827,7 @@ dependencies = [
  "futures",
  "hex",
  "k256",
+ "openssl",
  "portpicker",
  "pretty_assertions",
  "rand 0.8.5",
@@ -3864,6 +3865,7 @@ dependencies = [
  "futures",
  "hex",
  "libp2p-identity",
+ "openssl",
  "rand 0.8.5",
  "rayon",
  "regex",
@@ -4081,7 +4083,7 @@ dependencies = [
 
 [[package]]
 name = "forc-wallet"
-version = "0.16.3"
+version = "0.16.4"
 dependencies = [
  "anyhow",
  "clap",
@@ -4092,6 +4094,7 @@ dependencies = [
  "futures",
  "hex",
  "home",
+ "openssl",
  "rand 0.8.5",
  "rpassword",
  "serde_json",

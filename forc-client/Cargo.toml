@@ -58,6 +58,7 @@ fuels-core.workspace = true
 futures.workspace = true
 hex.workspace = true
 k256.workspace = true
+openssl.workspace = true
 rand.workspace = true
 regex.workspace = true
 reqwest = { workspace = true }
