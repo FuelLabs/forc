@@ -1,3 +1,9 @@
+# 0.71.1 (April 7th, 2026)
+
+### Changed
+
+- deps: update compatibility to `fuel-core` 0.48, `fuel-crypto` 0.66, and `fuels-rs` 0.77
+
 # 0.71.0 (December 8th, 2025)
 
 ### Changed

@@ -18,35 +18,35 @@ repository = "https://github.com/FuelLabs/forc"
 [workspace.dependencies]
 # Internal dependencies
 forc-tracing = { version = "0.72.0", path = "forc-tracing" }
-forc-wallet = { version = "0.16.2", path = "forc-wallet" }
+forc-wallet = { version = "0.16.3", path = "forc-wallet" }
 
 # Sway dependencies (from crates.io)
-sway-core = "0.70.3"
-sway-features = "0.70.3"
-sway-types = "0.70.3"
-sway-utils = "0.70.3"
+sway-core = "0.71.0"
+sway-features = "0.71.0"
+sway-types = "0.71.0"
+sway-utils = "0.71.0"
 
 # Forc dependencies (from crates.io)
-forc = "0.70.3"
-forc-debug = "0.70.3"
-forc-pkg = "0.70.3"
-forc-tx = "0.70.3"
-forc-util = "0.70.3"
+forc = "0.71.0"
+forc-debug = "0.71.0"
+forc-pkg = "0.71.0"
+forc-tx = "0.71.0"
+forc-util = "0.71.0"
 
-# External Fuel dependencies
+# External Fuel dependencies (from crates.io)
 fuel-abi-types = "0.15"
-fuel-core = { version = "0.47", default-features = false }
-fuel-core-chain-config = { version = "0.47", default-features = false }
-fuel-core-client = { version = "0.47", default-features = false }
-fuel-core-storage = { version = "0.47", default-features = false }
-fuel-core-types = { version = "0.47", default-features = false }
-fuel-crypto = "0.65"
+fuel-core = { version = "0.48", default-features = false }
+fuel-core-chain-config = { version = "0.48", default-features = false }
+fuel-core-client = { version = "0.48", default-features = false }
+fuel-core-storage = { version = "0.48", default-features = false }
+fuel-core-types = { version = "0.48", default-features = false }
 fuel-telemetry = "0.1.1"
-fuel-tx = "0.65"
-fuel-vm = "0.65"
-fuels = "0.76"
-fuels-accounts = "0.76"
-fuels-core = "0.76"
+fuel-crypto = "0.66"
+fuel-tx = "0.66"
+fuel-vm = "0.66"
+fuels = "0.77"
+fuels-accounts = "0.77"
+fuels-core = "0.77"
 
 # External dependencies
 ansiterm = "0.12"

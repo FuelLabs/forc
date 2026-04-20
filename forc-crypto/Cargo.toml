@@ -4,7 +4,7 @@ name = "forc-crypto"
 # - Remove path dependencies
 # - Update CHANGELOG.md.
 # - Create "forc-crypto-0.71.x" git tag.
-version = "0.71.0"
+version = "0.71.1"
 description = "A `forc` plugin for handling various cryptographic operations and conversions."
 edition = "2021"
 authors.workspace = true
@@ -23,9 +23,9 @@ clap = { workspace = true, features = ["derive", "env"] }
 forc-tracing.workspace = true
 forc-util.workspace = true
 fuel-core-types.workspace = true
-fuel-crypto = { version = "0.65", features = ["random"] }
-fuels-accounts = "0.76"
-fuels-core = "0.76"
+fuel-crypto = { version = "0.66", features = ["random"] }
+fuels-accounts.workspace = true
+fuels-core.workspace = true
 futures.workspace = true
 hex.workspace = true
 libp2p-identity = { workspace = true, features = ["peerid", "secp256k1"] }

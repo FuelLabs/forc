@@ -1,3 +1,9 @@
+# 0.16.3 (April 7th, 2026)
+
+### Changed
+
+- deps: update compatibility to `fuel-core` 0.48 and `fuels-rs` 0.77
+
 # 0.16.2 (December 6th, 2025)
 
 No functional changes. Version bump to test `releases.toml` automation.

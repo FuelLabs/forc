@@ -1,3 +1,9 @@
+# 0.71.3 (April 7th, 2026)
+
+### Changed
+
+- deps: update compatibility to `fuel-core` 0.48 and related Fuel dependencies
+
 # 0.71.2 (January 9th, 2026)
 
 - Use vendored OpenSSL for cross-compilation to avoid system package dependencies

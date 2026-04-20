@@ -1,12 +1,11 @@
 [project]
 authors = ["Fuel Labs <contact@fuel.sh>"]
 entry = "main.sw"
-implicit-std = true
 license = "Apache-2.0"
 name = "contract_with_dep_with_salt_conflict"
+implicit-std = true
 
 [dependencies]
-
 
 [contract-dependencies]
 contract_with_dep = { path = "../contract_with_dep" }
