@@ -1,8 +1,8 @@
 # 0.71.1 (April 7th, 2026)
 
-- chore: bump `fuels-rs` to 0.77, `fuel-vm` to 0.66, `fuel-core` to 0.48
+### Changed
 
-No functional changes from v0.71.0.
+- deps: update compatibility to `fuel-core` 0.48, `fuel-crypto` 0.66, and `fuels-rs` 0.77
 
 # 0.71.0 (December 8th, 2025)
 

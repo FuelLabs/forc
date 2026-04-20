@@ -2,9 +2,7 @@
 
 ### Changed
 
-- chore: bump `fuels-rs` to 0.77, `fuel-vm` to 0.66, `fuel-core` to 0.48
-
-No functional changes from v0.16.2.
+- deps: update compatibility to `fuel-core` 0.48 and `fuels-rs` 0.77
 
 # 0.16.2 (December 6th, 2025)
 

@@ -1,6 +1,8 @@
 # 0.71.3 (April 7th, 2026)
 
-- Bump `fuels-rs` to 0.77, `fuel-vm` to 0.66, and `fuel-core` to 0.48
+### Changed
+
+- deps: update compatibility to `fuel-core` 0.48 and related Fuel dependencies
 
 # 0.71.2 (January 9th, 2026)
 

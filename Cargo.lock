@@ -3810,7 +3810,7 @@ dependencies = [
  "forc",
  "forc-debug",
  "forc-pkg",
- "forc-tracing 0.72.1",
+ "forc-tracing 0.72.0",
  "forc-tx",
  "forc-util",
  "forc-wallet",
@@ -3855,7 +3855,7 @@ dependencies = [
  "async-trait",
  "clap",
  "criterion",
- "forc-tracing 0.72.1",
+ "forc-tracing 0.72.0",
  "forc-util",
  "fuel-core-types",
  "fuel-crypto",
@@ -3916,7 +3916,7 @@ dependencies = [
  "anyhow",
  "clap",
  "dialoguer",
- "forc-tracing 0.72.1",
+ "forc-tracing 0.72.0",
  "forc-util",
  "fuel-core",
  "fuel-core-chain-config",
@@ -4017,7 +4017,7 @@ dependencies = [
 
 [[package]]
 name = "forc-tracing"
-version = "0.72.1"
+version = "0.72.0"
 dependencies = [
  "ansiterm",
  "anyhow",
@@ -4086,7 +4086,7 @@ dependencies = [
  "anyhow",
  "clap",
  "eth-keystore",
- "forc-tracing 0.72.1",
+ "forc-tracing 0.72.0",
  "fuel-core-client",
  "fuels",
  "futures",
