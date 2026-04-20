@@ -5,6 +5,10 @@
 - deps: update compatibility to `sway` 0.71.0, `fuel-core` 0.48, `fuel-vm` 0.66, and `fuels-rs` 0.77
 - internal: update trace storage handling for the `fuel-vm` 0.66 APIs
 
+### Fixed
+
+- Use vendored OpenSSL for cross-compilation to avoid system package dependencies
+
 # 0.71.1 (February 4th, 2026)
 
 - First release from `FuelLabs/forc` repository

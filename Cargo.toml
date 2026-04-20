@@ -18,7 +18,7 @@ repository = "https://github.com/FuelLabs/forc"
 [workspace.dependencies]
 # Internal dependencies
 forc-tracing = { version = "0.72.0", path = "forc-tracing" }
-forc-wallet = { version = "0.16.3", path = "forc-wallet" }
+forc-wallet = { version = "0.16.4", path = "forc-wallet" }
 
 # Sway dependencies (from crates.io)
 sway-core = "0.71.0"

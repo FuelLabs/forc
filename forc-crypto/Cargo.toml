@@ -29,6 +29,7 @@ fuels-core.workspace = true
 futures.workspace = true
 hex.workspace = true
 libp2p-identity = { workspace = true, features = ["peerid", "secp256k1"] }
+openssl.workspace = true
 rand.workspace = true
 rayon.workspace = true
 regex.workspace = true
