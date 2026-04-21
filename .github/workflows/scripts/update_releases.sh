@@ -16,6 +16,21 @@ status() {
     printf "\e[32m\e[1m%${WIDTH}s\e[0m %s\n" "$1" "$2"
 }
 
+ensure_releases_file_spacing() {
+    # Make appends robust even if the existing file does not end with a blank line.
+    if [ ! -s "$RELEASES_FILE" ]; then
+        return
+    fi
+
+    if [ -n "$(tail -c1 "$RELEASES_FILE")" ]; then
+        printf '\n' >> "$RELEASES_FILE"
+    fi
+
+    if [ -n "$(tail -n1 "$RELEASES_FILE")" ]; then
+        printf '\n' >> "$RELEASES_FILE"
+    fi
+}
+
 CRATE_NAME=$1
 VERSION=$2
 RELEASES_FILE="releases.toml"
@@ -89,6 +104,8 @@ if [ ! -f "$RELEASES_FILE" ]; then
 EOF
     status "Created" "$RELEASES_FILE"
 fi
+
+ensure_releases_file_spacing
 
 # Build the TOML entry
 {
