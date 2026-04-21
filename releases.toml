@@ -49,3 +49,10 @@ crate = "forc-wallet"
 version = "0.16.4"
 date = "2026-04-20"
 fuels-rs = "0.77.0"
+
+[[releases]]
+crate = "forc-crypto"
+version = "0.71.1"
+date = "2026-04-21"
+fuel-core-types = "0.48.0"
+fuels-rs = "0.77.0"
