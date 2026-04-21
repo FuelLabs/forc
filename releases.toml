@@ -56,3 +56,11 @@ version = "0.71.1"
 date = "2026-04-21"
 fuel-core-types = "0.48.0"
 fuels-rs = "0.77.0"
+
+[[releases]]
+crate = "forc-node"
+version = "0.71.3"
+date = "2026-04-21"
+fuel-core = "0.48.0"
+fuel-core-types = "0.48.0"
+
