@@ -1,3 +1,9 @@
+# 0.71.3 (May 26th, 2026)
+
+### Changed
+
+- deps: update compatibility to `sway` 0.71.2
+
 # 0.71.2 (April 7th, 2026)
 
 ### Changed
