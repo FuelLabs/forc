@@ -72,3 +72,11 @@ sway = "0.71.0"
 fuel-core-types = "0.48.0"
 fuels-rs = "0.77.0"
 
+[[releases]]
+crate = "forc-client"
+version = "0.71.3"
+date = "2026-05-26"
+sway = "0.71.2"
+fuel-core-types = "0.48.0"
+fuels-rs = "0.77.0"
+
