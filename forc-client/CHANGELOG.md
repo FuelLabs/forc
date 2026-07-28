@@ -1,3 +1,10 @@
+# 0.71.5 (July 28th, 2026)
+
+### Changed
+
+- chore: bump forc-client to 0.71.5
+- fix: ethnum compilation issue and using different toolchain in CI
+
 # 0.71.4 (July 28th, 2026)
 
 ### Changed
