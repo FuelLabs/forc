@@ -25,8 +25,8 @@ use fuels_accounts::{provider::Provider, Account, ViewOnlyAccount};
 use pkg::BuiltPackage;
 use std::time::Duration;
 use std::{path::PathBuf, str::FromStr};
+use sway_core::language::parsed::TreeType;
 use sway_core::BuildTarget;
-use sway_core::{language::parsed::TreeType};
 use tokio::time::timeout;
 use tracing::info;
 
