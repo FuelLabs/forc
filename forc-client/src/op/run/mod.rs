@@ -8,7 +8,6 @@ use crate::{
     },
 };
 use anyhow::{anyhow, bail, Context, Result};
-use forc::cli::shared::IrCliOpt;
 use forc_pkg::{self as pkg, fuel_core_not_running, DumpOpts, PackageManifestFile};
 use forc_tracing::println_warning;
 use forc_util::tx_utils::format_log_receipts;
@@ -27,7 +26,7 @@ use pkg::BuiltPackage;
 use std::time::Duration;
 use std::{path::PathBuf, str::FromStr};
 use sway_core::BuildTarget;
-use sway_core::{language::parsed::TreeType, IrCli};
+use sway_core::{language::parsed::TreeType};
 use tokio::time::timeout;
 use tracing::info;
 
@@ -321,10 +320,6 @@ fn build_opts_from_cmd(cmd: &cmd::Run) -> pkg::BuildOpts {
             ir: cmd.print.ir(),
             reverse_order: cmd.print.reverse_order,
         },
-        verify_ir: cmd
-            .verify_ir
-            .as_ref()
-            .map_or(IrCli::default(), |opts| IrCliOpt::from(opts).0),
         minify: pkg::MinifyOpts {
             json_abi: cmd.minify.json_abi,
             json_storage_slots: cmd.minify.json_storage_slots,
