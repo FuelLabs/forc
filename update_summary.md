@@ -2,10 +2,11 @@
 
 ## Why this update was needed
 
-Public Forc documentation often presents core Forc and every plugin as one
-versioned tool even though network-facing plugins moved into this repository
-and now release independently. That can make a Sway compiler version look like
-an authoritative version for unrelated plugin binaries.
+At the 2026-07-23 recheck, the public Forc command reference
+(docs.fuel.network/docs/forc/) still published a single "Stable" Forc 0.69.0
+and obscured the independent release cadence of the network-facing plugins
+that now live in this repository. That can make a Sway compiler version look
+like an authoritative version for unrelated plugin binaries.
 
 ## What changed
 
@@ -18,10 +19,10 @@ an authoritative version for unrelated plugin binaries.
 - Recommended named Fuelup network channels for deployed-network
   compatibility rather than choosing components by whichever release number
   looks newest.
-- Added verification guidance using `forc --version`, plugin `--version` and
-  `--help`, `fuelup show`, and the selected network manifest.
-- Warned against presenting ambiguous "latest Forc" documentation without
-  identifying the executable, source repository, version, and target network.
+- Added verification guidance using `fuelup show`, `forc plugins`, and
+  `forc <command> --help` from the selected toolchain.
+- Warned against the unqualified term "latest" unless it is qualified as an
+  upstream release or a specific Fuelup network channel.
 
 ## Validation
 
