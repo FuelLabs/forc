@@ -25,7 +25,7 @@ For applications targeting a public Fuel network:
 3. Keep the project's `fuel-toolchain.toml`, `Forc.lock`, SDK lockfile, ABI, bytecode, and target chain ID together.
 4. Verify command flags with `forc <command> --help` from the selected toolchain.
 
-For a custom or source-built toolchain, use [`releases.toml`](./releases.toml) to see which Sway, Fuel Core, and `fuels-rs` versions each published plugin release was built against. The file is generated as part of the release process and is compatibility evidence for that release; it is not a promise that every other component combination is supported.
+For a custom or source-built toolchain, use [`releases.toml`](./releases.toml) to see which Sway, Fuel Core, and `fuels-rs` versions a published plugin release was built against. The file is generated as part of the release process and only records releases cut since that automation was introduced, so not every published release has an entry; for a release without one, use the `Cargo.lock` and changelog at that release's tag as the compatibility evidence. An entry is compatibility evidence for that release; it is not a promise that every other component combination is supported.
 
 ## Development
 
